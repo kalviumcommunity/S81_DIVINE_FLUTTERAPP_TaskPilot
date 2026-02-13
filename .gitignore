@@ -1,0 +1,99 @@
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+*.iml
+*.lock
+build/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+ios/Flutter/app.flx
+ios/Flutter/app.zip
+ios/Flutter/flutter_assets/
+ios/Flutter/flutter_export_environment.sh
+ios/ServiceDefinitions.json
+ios/Runner/GeneratedPluginRegistrant.*
+android/app/debug
+android/app/profile
+android/app/release
+android/app/google-services.json
+android/.gradle/
+android/gradle.properties
+android/local.properties
+android/.android/
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.histories
+.svn/
+migrate_working_dir/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter failure logs
+flutter_01.log
+flutter_02.log
+flutter_03.log
+flutter_04.log
+flutter_05.log
+flutter_06.log
+flutter_07.log
+flutter_08.log
+flutter_09.log
+flutter_10.log
+flutter_11.log
+flutter_12.log
+flutter_13.log
+flutter_14.log
+flutter_15.log
+
+# Exceptions to above rules.
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+*.apk
+*.app
+*.ipa
+*.aar
+*.deb
+
+# Credentials (sensitive)
+google-services.json
+GoogleService-Info.plist
+.firebase/
