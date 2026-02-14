@@ -287,9 +287,9 @@ debugPrint('🔄 Lifecycle');  // Cycle
 // Use consistent formatting
 debugPrint('[ClassName.methodName] Message: $value');
 
-// Example:
-debugPrint('[UserService.login] Attempting login for: $email');
-debugPrint('[UserService.login] Response: ${response.body}');
+// Example (always mask PII):
+debugPrint('[UserService.login] Attempting login for user: ***masked***');
+debugPrint('[UserService.login] Response: OK');
 ```
 
 ### Filtering Console Output
@@ -602,8 +602,8 @@ class ListItemTile extends StatelessWidget {
 
 Create a consistent prefix for easy filtering:
 ```dart
-// User service logs
-debugPrint('[UserService] Login attempt for: $email');
+// User service logs (mask sensitive data)
+debugPrint('[UserService] Login attempt for user: ***masked***');
 
 // API service logs
 debugPrint('[ApiService] GET /users - Status: 200');

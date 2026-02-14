@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/retro_theme.dart';
 import '../utils/responsive_helper.dart';
-import 'dart:async';
 
 /// Development Tools & Debugging Demo Screen
 /// 
@@ -37,10 +36,10 @@ class _DevToolsDemoState extends State<DevToolsDemoScreen> {
     debugPrint('🔧 DevTools Demo Screen - initState()');
   }
 
-  /// Log event helper
+  /// Log event helper with structured formatting
   void _logEvent(String event, String description) {
     final timestamp = DateTime.now().toString().split('.')[0];
-    final logEntry = '$timestamp - $event: $description';
+    final logEntry = '[$timestamp] $event: $description';
     
     setState(() {
       _logHistory.insert(0, logEntry);
@@ -49,7 +48,7 @@ class _DevToolsDemoState extends State<DevToolsDemoScreen> {
       }
     });
 
-    debugPrint('📝 [$event] $description');
+    debugPrint('📝 [${event.toUpperCase()}] $description');
   }
 
   /// Hot Reload Test 1: Change message
@@ -260,7 +259,7 @@ class _DevToolsDemoState extends State<DevToolsDemoScreen> {
                   icon: const Icon(Icons.palette),
                   label: const Text('Change Color'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple,
+                    backgroundColor: RetroColors.retroGreen,
                   ),
                 ),
               ],
@@ -409,7 +408,6 @@ class _DevToolsDemoState extends State<DevToolsDemoScreen> {
               color: Colors.black,
               border: Border.all(color: Colors.green, width: 1),
               borderRadius: BorderRadius.circular(8),
-              fontFeature: [const FontFeature.tabularFigures()],
             ),
             padding: EdgeInsets.all(responsive.paddingSmall),
             child: Column(
