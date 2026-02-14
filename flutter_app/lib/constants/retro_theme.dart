@@ -30,12 +30,12 @@ class RetroColors {
 
 /// Retro Typography
 class RetroTypography {
-  static const FontFamily courierNew = 'Courier';
-  static const FontFamily vt323 = 'VT323';
+  static const String courierNew = 'Courier';
+  static const String vt323 = 'VT323';
 
   // Text Styles
   static const TextStyle retroDisplayLarge = TextStyle(
-    fontFamily: vt323,
+    fontFamily: 'VT323',
     fontSize: 48,
     fontWeight: FontWeight.bold,
     color: RetroColors.neonPurple,
@@ -43,7 +43,7 @@ class RetroTypography {
   );
 
   static const TextStyle retroDisplayMedium = TextStyle(
-    fontFamily: vt323,
+    fontFamily: 'VT323',
     fontSize: 32,
     fontWeight: FontWeight.bold,
     color: RetroColors.neonCyan,
@@ -51,28 +51,28 @@ class RetroTypography {
   );
 
   static const TextStyle retroHeadline = TextStyle(
-    fontFamily: courierNew,
+    fontFamily: 'Courier',
     fontSize: 24,
     fontWeight: FontWeight.w700,
     color: RetroColors.retroBlack,
   );
 
   static const TextStyle retroTitle = TextStyle(
-    fontFamily: courierNew,
+    fontFamily: 'Courier',
     fontSize: 18,
     fontWeight: FontWeight.w600,
     color: RetroColors.retroBlack,
   );
 
   static const TextStyle retroBody = TextStyle(
-    fontFamily: courierNew,
+    fontFamily: 'Courier',
     fontSize: 14,
     fontWeight: FontWeight.w400,
     color: RetroColors.retroBlack,
   );
 
   static const TextStyle retroLabel = TextStyle(
-    fontFamily: courierNew,
+    fontFamily: 'Courier',
     fontSize: 12,
     fontWeight: FontWeight.w500,
     color: RetroColors.retroGray,
