@@ -347,34 +347,39 @@ class _StateDrivenUIDemoState extends State<StateDrivenUIDemoScreen> {
           ),
           SizedBox(height: responsive.spacingMedium),
           // Control Buttons
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton.icon(
-                onPressed: _decrementCounter,
-                icon: const Icon(Icons.remove),
-                label: const Text('Decrease'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: _decrementCounter,
+                  icon: const Icon(Icons.remove),
+                  label: const Text('Decrease'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
                 ),
-              ),
-              ElevatedButton.icon(
-                onPressed: _resetCounter,
-                icon: const Icon(Icons.refresh),
-                label: const Text('Reset'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey,
+                SizedBox(width: responsive.spacingMedium),
+                ElevatedButton.icon(
+                  onPressed: _resetCounter,
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('Reset'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey,
+                  ),
                 ),
-              ),
-              ElevatedButton.icon(
-                onPressed: _incrementCounter,
-                icon: const Icon(Icons.add),
-                label: const Text('Increase'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
+                SizedBox(width: responsive.spacingMedium),
+                ElevatedButton.icon(
+                  onPressed: _incrementCounter,
+                  icon: const Icon(Icons.add),
+                  label: const Text('Increase'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           SizedBox(height: responsive.spacingMedium),
           // Explanation

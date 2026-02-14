@@ -48,6 +48,72 @@ class ResponsiveHelper {
     }
   }
 
+  /// Get small padding value
+  double get paddingSmall {
+    if (isMobile) {
+      return 8.0;
+    } else if (isTablet) {
+      return 12.0;
+    } else {
+      return 16.0;
+    }
+  }
+
+  /// Get medium padding value
+  double get paddingMedium {
+    if (isMobile) {
+      return 12.0;
+    } else if (isTablet) {
+      return 16.0;
+    } else {
+      return 24.0;
+    }
+  }
+
+  /// Get large padding value
+  double get paddingLarge {
+    if (isMobile) {
+      return 16.0;
+    } else if (isTablet) {
+      return 24.0;
+    } else {
+      return 32.0;
+    }
+  }
+
+  /// Get small spacing value
+  double get spacingSmall {
+    if (isMobile) {
+      return 4.0;
+    } else if (isTablet) {
+      return 8.0;
+    } else {
+      return 12.0;
+    }
+  }
+
+  /// Get medium spacing value
+  double get spacingMedium {
+    if (isMobile) {
+      return 8.0;
+    } else if (isTablet) {
+      return 12.0;
+    } else {
+      return 16.0;
+    }
+  }
+
+  /// Get large spacing value
+  double get spacingLarge {
+    if (isMobile) {
+      return 16.0;
+    } else if (isTablet) {
+      return 20.0;
+    } else {
+      return 32.0;
+    }
+  }
+
   /// Get responsive font size
   double responsiveFontSize({
     required double mobileSize,
