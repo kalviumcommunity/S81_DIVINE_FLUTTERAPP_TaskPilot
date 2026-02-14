@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/responsive_home.dart';
+import 'screens/state_driven_ui_demo.dart';
 import 'constants/retro_theme.dart';
 
 void main() {
@@ -108,6 +109,10 @@ class TaskPilotApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.light,
       home: const ResponsiveHome(),
+      routes: {
+        '/home': (context) => const ResponsiveHome(),
+        '/state-driven-ui': (context) => const StateDrivenUIDemoScreen(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }

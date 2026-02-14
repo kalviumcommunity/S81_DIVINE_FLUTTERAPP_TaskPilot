@@ -26,6 +26,13 @@ class RetroColors {
   static const Color warning = Color(0xFFFFB81C);
   static const Color error = Color(0xFFFF0044);
   static const Color info = Color(0xFF0099FF);
+
+  // UI Colors for Demos
+  static const Color retroBlue = Color(0xFF0066CC);
+  static const Color retroGreen = Color(0xFF00AA00);
+  static const Color retroYellow = Color(0xFFFFCC00);
+  static const Color retroRed = Color(0xFFCC0000);
+  static const Color retrofaded = Color(0xFFF0F0F0);
 }
 
 /// Retro Typography

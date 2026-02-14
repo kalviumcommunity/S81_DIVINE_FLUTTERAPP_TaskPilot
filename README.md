@@ -63,7 +63,31 @@ s81_taskPilot/
   - Upcoming deadlines list
 - [x] **Responsive Widgets**: GridView, Expanded, Flexible, AspectRatio, LayoutBuilder
 
-### Upcoming Features (Phase 2-4)
+### Phase 2: State-Driven UI & Widget Trees 🎯 (In Progress)
+
+Interactive demonstration of Flutter's reactive UI model:
+
+- [x] **Widget Tree Demo Screen** - Visual hierarchy of widgets
+- [x] **Profile Card Demo** - AnimatedCrossFade for expandable details
+- [x] **Counter Demo** - Real-time state updates with increment/decrement
+- [x] **Theme Switcher Demo** - Dynamic color changes based on state
+- [x] **State Explanation** - Step-by-step reactive UI cycle
+- [ ] Comprehensive documentation in [STATE_DRIVEN_UI_GUIDE.md](STATE_DRIVEN_UI_GUIDE.md)
+
+**Key Concepts Covered:**
+- Widget hierarchies and nesting
+- StatefulWidget vs StatelessWidget
+- setState() and rebuild cycle
+- Reactive programming model
+- State management best practices
+
+**Access Demo:**
+```dart
+// From any screen, navigate to:
+Navigator.pushNamed(context, '/state-driven-ui');
+```
+
+### Upcoming Features (Phase 3+)
 
 - [ ] Firebase Integration (Auth, Firestore, Cloud Functions)
 - [ ] n8n Automation Workflows
