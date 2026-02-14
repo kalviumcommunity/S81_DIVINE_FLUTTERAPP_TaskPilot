@@ -35,24 +35,29 @@ class _MultiScreenNavigationDemoScreenState
         _navigationHistory.removeLast();
       }
     });
-    debugPrint('🧭 [Navigation] Route: $route');
+    debugPrint('🧭 [Navigation.pushNamed] Route: $route | TimeStamp: ${DateTime.now().toIso8601String()}');
   }
 
   Future<void> _navigateToBasicScreen() async {
     _recordNavigation('/navigation/basic');
+    debugPrint('🧭 [Navigation.basic] Opening BasicExampleScreen');
     Navigator.pushNamed(context, '/navigation/basic');
   }
 
   Future<void> _navigateWithData() async {
     _recordNavigation('/navigation/data');
-    final result = await Navigator.pushNamed(
+    debugPrint('🧭 [Navigation.data] Sending argument: "Hello from Home!"');
+    final dataScreenResult = await Navigator.pushNamed(
       context,
       '/navigation/data',
       arguments: 'Hello from Home!',
-    ) as String?;
+    );
     
-    if (result != null) {
-      setState(() => _returnedData = result);
+    if (!mounted) return;
+    
+    if (dataScreenResult is String?) {
+      debugPrint('🧭 [Navigation.data] Received result: $dataScreenResult');
+      setState(() => _returnedData = dataScreenResult);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('📬 Received: $_returnedData')),
       );
@@ -61,34 +66,46 @@ class _MultiScreenNavigationDemoScreenState
 
   Future<void> _navigateToSettings() async {
     _recordNavigation('/navigation/settings');
-    final result = await Navigator.pushNamed(
+    debugPrint('🧭 [Navigation.settings] Opening SettingsScreen');
+    final settingsScreenResult = await Navigator.pushNamed(
       context,
       '/navigation/settings',
-    ) as Map<String, dynamic>?;
+    );
     
-    if (result != null && result['theme'] != null) {
-      setState(() {
-        _returnedData = 'Theme: ${result['theme']}, Language: ${result['language']}';
-      });
+    if (!mounted) return;
+    
+    if (settingsScreenResult is Map<String, dynamic>) {
+      final theme = settingsScreenResult['theme'] as String?;
+      final language = settingsScreenResult['language'] as String?;
+      debugPrint('🧭 [Navigation.settings] Received: theme=$theme, language=$language');
+      if (theme != null) {
+        setState(() {
+          _returnedData = 'Theme: $theme, Language: $language';
+        });
+      }
     }
   }
 
   Future<void> _navigateToWizard() async {
     _recordNavigation('/navigation/wizard');
-    final result = await Navigator.pushNamed(
+    debugPrint('🧭 [Navigation.wizard] Opening WizardScreen with multi-step flow');
+    final wizardScreenResult = await Navigator.pushNamed(
       context,
       '/navigation/wizard',
-    ) as String?;
+    );
     
-    if (result != null) {
-      setState(() => _returnedData = result);
+    if (!mounted) return;
+    
+    if (wizardScreenResult is String) {
+      debugPrint('🧭 [Navigation.wizard] Wizard completed: $wizardScreenResult');
+      setState(() => _returnedData = wizardScreenResult);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final responsive = ResponsiveHelper.of(context);
-    final isSmall = responsive.isSmall;
+    final responsive = context.responsive;
+    final isMobileDevice = responsive.isMobile;
 
     return Scaffold(
       appBar: AppBar(
@@ -118,7 +135,11 @@ class _MultiScreenNavigationDemoScreenState
                   Text(
                     'Navigation Hub',
                     style: TextStyle(
-                      fontSize: responsive.fontSize(18),
+                      fontSize: responsive.responsiveFontSize(
+                        mobileSize: 18,
+                        tabletSize: 20,
+                        desktopSize: 22,
+                      ),
                       fontWeight: FontWeight.bold,
                       color: RetroColors.retroBlue,
                     ),
@@ -126,7 +147,7 @@ class _MultiScreenNavigationDemoScreenState
                   SizedBox(height: responsive.spacingSmall),
                   Text(
                     'Total navigations: $_navigationCount',
-                    style: TextStyle(fontSize: responsive.fontSize(14)),
+                    style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
                   ),
                   if (_returnedData != null) ...[
                     SizedBox(height: responsive.spacingSmall),
@@ -139,7 +160,7 @@ class _MultiScreenNavigationDemoScreenState
                       child: Text(
                         '✅ Returned: $_returnedData',
                         style: TextStyle(
-                          fontSize: responsive.fontSize(13),
+                          fontSize: responsive.responsiveFontSize(mobileSize: ),
                           color: RetroColors.retroGreen,
                         ),
                       ),
@@ -154,7 +175,7 @@ class _MultiScreenNavigationDemoScreenState
             Text(
               '📍 Navigation Examples',
               style: TextStyle(
-                fontSize: responsive.fontSize(16),
+                fontSize: responsive.responsiveFontSize(mobileSize: ),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -198,7 +219,7 @@ class _MultiScreenNavigationDemoScreenState
             Text(
               '💻 Code Patterns',
               style: TextStyle(
-                fontSize: responsive.fontSize(16),
+                fontSize: responsive.responsiveFontSize(mobileSize: ),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -245,7 +266,7 @@ class _MultiScreenNavigationDemoScreenState
             Text(
               '🎯 Key Concepts',
               style: TextStyle(
-                fontSize: responsive.fontSize(16),
+                fontSize: responsive.responsiveFontSize(mobileSize: ),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -294,7 +315,7 @@ class _MultiScreenNavigationDemoScreenState
               Text(
                 '📜 Navigation History',
                 style: TextStyle(
-                  fontSize: responsive.fontSize(16),
+                  fontSize: responsive.responsiveFontSize(mobileSize: ),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -322,7 +343,7 @@ class _MultiScreenNavigationDemoScreenState
                             entry.value,
                             style: TextStyle(
                               color: RetroColors.retroGreen,
-                              fontSize: responsive.fontSize(12),
+                              fontSize: responsive.responsiveFontSize(mobileSize: ),
                               fontFamily: 'monospace',
                             ),
                           ),
@@ -352,13 +373,13 @@ class _MultiScreenNavigationDemoScreenState
         title: Text(
           title,
           style: TextStyle(
-            fontSize: responsive.fontSize(14),
+            fontSize: responsive.responsiveFontSize(mobileSize: ),
             fontWeight: FontWeight.bold,
           ),
         ),
         subtitle: Text(
           description,
-          style: TextStyle(fontSize: responsive.fontSize(12)),
+          style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
         ),
         trailing: Icon(
           Icons.arrow_forward,
@@ -389,7 +410,7 @@ class _MultiScreenNavigationDemoScreenState
             title,
             style: TextStyle(
               color: RetroColors.retroYellow,
-              fontSize: responsive.fontSize(12),
+              fontSize: responsive.responsiveFontSize(mobileSize: ),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -398,7 +419,7 @@ class _MultiScreenNavigationDemoScreenState
             code,
             style: TextStyle(
               color: Colors.green[400],
-              fontSize: responsive.fontSize(11),
+              fontSize: responsive.responsiveFontSize(mobileSize: ),
               fontFamily: 'monospace',
             ),
           ),
@@ -425,7 +446,7 @@ class _MultiScreenNavigationDemoScreenState
           Text(
             title,
             style: TextStyle(
-              fontSize: responsive.fontSize(13),
+              fontSize: responsive.responsiveFontSize(mobileSize: ),
               fontWeight: FontWeight.bold,
               color: RetroColors.retroRed,
             ),
@@ -433,7 +454,7 @@ class _MultiScreenNavigationDemoScreenState
           SizedBox(height: 4),
           Text(
             description,
-            style: TextStyle(fontSize: responsive.fontSize(12)),
+            style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
           ),
         ],
       ),
@@ -447,7 +468,7 @@ class BasicExampleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final responsive = ResponsiveHelper.of(context);
+    final responsive = context.responsive;
 
     return Scaffold(
       appBar: AppBar(
@@ -471,7 +492,7 @@ class BasicExampleScreen extends StatelessWidget {
                   Text(
                     '1️⃣ Basic Navigation',
                     style: TextStyle(
-                      fontSize: responsive.fontSize(18),
+                      fontSize: responsive.responsiveFontSize(mobileSize: ),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -480,14 +501,14 @@ class BasicExampleScreen extends StatelessWidget {
                     'This screen was opened with:\n'
                     'Navigator.pushNamed(context, \'/navigation/basic\')',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: responsive.fontSize(14)),
+                    style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
                   ),
                   SizedBox(height: responsive.spacingMedium),
                   Text(
                     'Each push() adds a new layer to the navigation stack.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: responsive.fontSize(12),
+                      fontSize: responsive.responsiveFontSize(mobileSize: ),
                       fontStyle: FontStyle.italic,
                     ),
                   ),
@@ -516,10 +537,9 @@ class DataPassingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final responsive = ResponsiveHelper.of(context);
-    final message =
-        ModalRoute.of(context)?.settings.arguments as String? ??
-            'No data received';
+    final responsive = context.responsive;
+    final messageArg = ModalRoute.of(context)?.settings.arguments;
+    final message = messageArg is String ? messageArg : 'No data received';
 
     return Scaffold(
       appBar: AppBar(
@@ -543,14 +563,14 @@ class DataPassingScreen extends StatelessWidget {
                   Text(
                     '2️⃣ Data Passing',
                     style: TextStyle(
-                      fontSize: responsive.fontSize(18),
+                      fontSize: responsive.responsiveFontSize(mobileSize: ),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: responsive.spacingMedium),
                   Text(
                     'Received Message:',
-                    style: TextStyle(fontSize: responsive.fontSize(12)),
+                    style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
                   ),
                   SizedBox(height: responsive.spacingSmall),
                   Container(
@@ -563,7 +583,7 @@ class DataPassingScreen extends StatelessWidget {
                       message,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: responsive.fontSize(14),
+                        fontSize: responsive.responsiveFontSize(mobileSize: ),
                         color: RetroColors.retroGreen,
                         fontFamily: 'monospace',
                       ),
@@ -574,7 +594,7 @@ class DataPassingScreen extends StatelessWidget {
                     'Arguments are passed via the arguments parameter.\n'
                     'Received using ModalRoute.of(context).settings.arguments',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: responsive.fontSize(12)),
+                    style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
                   ),
                 ],
               ),
@@ -609,7 +629,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final responsive = ResponsiveHelper.of(context);
+    final responsive = context.responsive;
 
     return Scaffold(
       appBar: AppBar(
@@ -634,7 +654,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Text(
                     '3️⃣ Settings with Structured Data',
                     style: TextStyle(
-                      fontSize: responsive.fontSize(16),
+                      fontSize: responsive.responsiveFontSize(mobileSize: ),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -682,6 +702,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: responsive.spacingLarge),
             ElevatedButton.icon(
               onPressed: () {
+                debugPrint('🧭 [SettingsScreen.save] Saving settings: theme=$_selectedTheme, language=$_selectedLanguage');
                 Navigator.pop(
                   context,
                   {
@@ -714,11 +735,11 @@ class WizardScreen extends StatefulWidget {
 
 class _WizardScreenState extends State<WizardScreen> {
   int _currentStep = 1;
-  final List<String> _answers = [];
+  final List<String> _wizardAnswers = [];
 
   @override
   Widget build(BuildContext context) {
-    final responsive = ResponsiveHelper.of(context);
+    final responsive = context.responsive;
 
     return Scaffold(
       appBar: AppBar(
@@ -739,7 +760,7 @@ class _WizardScreenState extends State<WizardScreen> {
               child: Text(
                 'Step $_currentStep of 3',
                 style: TextStyle(
-                  fontSize: responsive.fontSize(14),
+                  fontSize: responsive.responsiveFontSize(mobileSize: ),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -766,13 +787,19 @@ class _WizardScreenState extends State<WizardScreen> {
               children: [
                 if (_currentStep > 1)
                   ElevatedButton.icon(
-                    onPressed: () => setState(() => _currentStep--),
+                    onPressed: () {
+                      debugPrint('🧭 [WizardScreen] Step $_currentStep → ${_currentStep - 1}');
+                      setState(() => _currentStep--);
+                    },
                     icon: const Icon(Icons.arrow_back),
                     label: const Text('Previous'),
                   ),
                 if (_currentStep < 3)
                   ElevatedButton.icon(
-                    onPressed: () => setState(() => _currentStep++),
+                    onPressed: () {
+                      debugPrint('🧭 [WizardScreen] Step $_currentStep → ${_currentStep + 1}');
+                      setState(() => _currentStep++);
+                    },
                     icon: const Icon(Icons.arrow_forward),
                     label: const Text('Next'),
                     style: ElevatedButton.styleFrom(
@@ -781,7 +808,10 @@ class _WizardScreenState extends State<WizardScreen> {
                   ),
                 if (_currentStep == 3)
                   ElevatedButton.icon(
-                    onPressed: () => Navigator.pop(context, '✅ Wizard Complete!'),
+                    onPressed: () {
+                      debugPrint('🧭 [WizardScreen.complete] All steps completed successfully');
+                      Navigator.pop(context, '✅ Wizard Complete!');
+                    },
                     icon: const Icon(Icons.done),
                     label: const Text('Complete'),
                     style: ElevatedButton.styleFrom(
@@ -804,7 +834,7 @@ class _WizardScreenState extends State<WizardScreen> {
           children: [
             Text(
               'Step 1: Welcome',
-              style: TextStyle(fontSize: responsive.fontSize(18)),
+              style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
             ),
             SizedBox(height: responsive.spacingMedium),
             Text(
@@ -820,7 +850,7 @@ class _WizardScreenState extends State<WizardScreen> {
           children: [
             Text(
               'Step 2: Configuration',
-              style: TextStyle(fontSize: responsive.fontSize(18)),
+              style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
             ),
             SizedBox(height: responsive.spacingMedium),
             Text(
@@ -836,7 +866,7 @@ class _WizardScreenState extends State<WizardScreen> {
           children: [
             Text(
               'Step 3: Review & Complete',
-              style: TextStyle(fontSize: responsive.fontSize(18)),
+              style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
             ),
             SizedBox(height: responsive.spacingMedium),
             Text(
