@@ -3,6 +3,7 @@ import 'screens/responsive_home.dart';
 import 'screens/state_driven_ui_demo.dart';
 import 'screens/stateless_stateful_demo.dart';
 import 'screens/dev_tools_demo.dart';
+import 'screens/multi_screen_navigation_demo.dart';
 import 'constants/retro_theme.dart';
 
 void main() {
@@ -116,6 +117,11 @@ class TaskPilotApp extends StatelessWidget {
         '/state-driven-ui': (context) => const StateDrivenUIDemoScreen(),
         '/stateless-stateful': (context) => const StatelessStatefulDemoScreen(),
         '/dev-tools': (context) => const DevToolsDemoScreen(),
+        '/navigation': (context) => const MultiScreenNavigationDemoScreen(),
+        '/navigation/basic': (context) => const BasicExampleScreen(),
+        '/navigation/data': (context) => const DataPassingScreen(),
+        '/navigation/settings': (context) => const SettingsScreen(),
+        '/navigation/wizard': (context) => const WizardScreen(),
       },
       debugShowCheckedModeBanner: false,
     );
