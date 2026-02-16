@@ -8,10 +8,91 @@
 
 - **Task Management**: Create, track, and complete tasks with priorities
 - **Client Management**: Manage client information and relationships
-- **Payment Tracking**: Monitor payments and payment status
-- **Automated Reminders**: n8n workflows for deadline alerts and payment follow-ups
-- **Responsive Design**: Works perfectly on mobile, tablet, and desktop
-- **Retro UI**: 90s digital dashboard aesthetic with modern 3D effects
+
+### Responsive Layout Design
+
+This section demonstrates a responsive layout in Flutter using `Row`, `Column`, and `Container`. The layout adapts to different screen sizes, showing a two-panel view on wider screens and a single-column view on narrower screens.
+
+**Code Snippets**
+
+Here's how `LayoutBuilder` is used to switch between layouts:
+
+```dart
+// In lib/screens/responsive_layout.dart
+LayoutBuilder(
+  builder: (context, constraints) {
+    if (constraints.maxWidth > 600) {
+      return _buildWideLayout(); // For tablets/desktops
+    } else {
+      return _buildNarrowLayout(); // For phones
+    }
+  },
+),
+```
+
+The wide layout uses a `Row` to place containers side-by-side:
+
+```dart
+// In lib/screens/responsive_layout.dart
+Widget _buildWideLayout() {
+  return Row(
+    children: [
+      Expanded(
+        child: Container(
+          color: Colors.amber,
+          child: Center(child: Text('Left Panel')),
+        ),
+      ),
+      SizedBox(width: 10),
+      Expanded(
+        child: Container(
+          color: Colors.greenAccent,
+          child: Center(child: Text('Right Panel')),
+        ),
+      ),
+    ],
+  );
+}
+```
+
+The narrow layout uses a `Column` to stack widgets vertically:
+
+```dart
+// In lib/screens/responsive_layout.dart
+Widget _buildNarrowLayout() {
+  return Column(
+    children: [
+      Expanded(
+        child: Container(
+          color: Colors.amber,
+          child: Center(child: Text('Main Content')),
+        ),
+      ),
+    ],
+  );
+}
+```
+
+**Screenshots**
+
+*Portrait (Narrow) View:*
+
+![Portrait Layout](<path_to_portrait_screenshot.png>)
+
+*Landscape (Wide) View:*
+
+![Landscape Layout](<path_to_landscape_screenshot.png>)
+
+**Reflection**
+
+*   **Why is responsive design important in mobile app development?**
+    Responsive design is crucial because it ensures a consistent and optimal user experience across a wide range of devices with different screen sizes and orientations. A responsive app feels professional and is usable whether on a small phone, a large tablet, or a desktop.
+
+*   **What challenges did you face ensuring adaptability?**
+    A primary challenge was deciding on the breakpoint for switching between the narrow and wide layouts. It required testing on different device sizes to find a value that works well for most scenarios. Another challenge is ensuring that content within the containers scales appropriately without causing overflow errors.
+
+*   **How can `MediaQuery` and `Expanded` help maintain balance in layouts?**
+    `MediaQuery` provides the screen's dimensions, which allows for dynamic adjustments to widget sizes based on the available space. The `Expanded` widget is essential within a `Row` or `Column` as it allows its child to fill the available space, which is key for creating flexible and balanced layouts that don't have fixed sizes.
 
 ---
 
@@ -198,7 +279,41 @@ Navigator.pushNamed(context, '/navigation');
 
 ---
 
-### Upcoming Features (Phase 6+)
+### Phase 6: Responsive Layouts 📐 (Completed)
+
+Master the art of building responsive designs:
+
+- [x] **Container Widget** - Flexible box for padding, margin, decoration
+- [x] **Row & Column Widgets** - Horizontal and vertical layouts with alignment
+- [x] **Responsive Design Patterns** - Mobile, tablet, desktop layouts
+- [x] **MediaQuery Usage** - Detecting screen size and orientation
+- [x] **Flexible & Expanded** - Proportional sizing with flex property
+- [x] **Adaptive Grid** - GridView that changes columns by device
+- [x] **RESPONSIVE_LAYOUTS_GUIDE.md** - Comprehensive 600+ line guide
+
+**Key Concepts:**
+- Container properties (padding, margin, decoration, alignment)
+- Row/Column alignment control
+- Flexible vs Expanded widgets
+- Master-detail layouts
+- Adaptive grid layouts
+- MediaQuery demonstrations
+
+**Demo Features:**
+- 5 interactive layout examples (Containers, Rows, Columns, Mixed, Grid)
+- Device info display with real-time metrics
+- Example library with selectable demos
+- Responsive design showcase
+- Code examples for each pattern
+
+**Access Demo:**
+```dart
+Navigator.pushNamed(context, '/responsive-layouts');
+```
+
+---
+
+### Upcoming Features (Phase 7+)
 
 - [ ] Firebase Integration (Auth, Firestore, Cloud Functions)
 - [ ] n8n Automation Workflows

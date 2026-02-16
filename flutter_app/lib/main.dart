@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'screens/responsive_home.dart';
+import 'screens/responsive_layout.dart';
 import 'screens/state_driven_ui_demo.dart';
 import 'screens/stateless_stateful_demo.dart';
 import 'screens/dev_tools_demo.dart';
 import 'screens/multi_screen_navigation_demo.dart';
+import 'screens/responsive_layouts_demo.dart';
 import 'constants/retro_theme.dart';
 
 void main() {
@@ -111,17 +112,13 @@ class TaskPilotApp extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.light,
-      home: const ResponsiveHome(),
+      home: ResponsiveLayout(),
       routes: {
-        '/home': (context) => const ResponsiveHome(),
-        '/state-driven-ui': (context) => const StateDrivenUIDemoScreen(),
-        '/stateless-stateful': (context) => const StatelessStatefulDemoScreen(),
-        '/dev-tools': (context) => const DevToolsDemoScreen(),
-        '/navigation': (context) => const MultiScreenNavigationDemoScreen(),
-        '/navigation/basic': (context) => const BasicExampleScreen(),
-        '/navigation/data': (context) => const DataPassingScreen(),
-        '/navigation/settings': (context) => const SettingsScreen(),
-        '/navigation/wizard': (context) => const WizardScreen(),
+        '/state-driven-ui': (context) => const StateDrivenUIDemo(),
+        '/stateless-stateful': (context) => const StatelessStatefulDemo(),
+        '/dev-tools': (context) => const DevToolsDemo(),
+        '/multi-screen-navigation': (context) => const MultiScreenNavigationDemo(),
+        '/responsive-layouts': (context) => const ResponsiveLayoutsDemo(),
       },
       debugShowCheckedModeBanner: false,
     );
