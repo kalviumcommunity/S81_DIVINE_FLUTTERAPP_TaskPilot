@@ -12,11 +12,11 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  firebase_core: ^2.24.0
-  firebase_auth: ^4.14.0
-  cloud_firestore: ^4.14.0
-  firebase_messaging: ^14.7.0
-  firebase_analytics: ^10.7.0
+  firebase_core: ^4.4.0
+  firebase_auth: ^6.1.4
+  cloud_firestore: ^6.1.2
+  firebase_messaging: ^16.1.1
+  firebase_analytics: ^12.1.2
   provider: ^6.0.0
   flutter_bloc: ^8.1.0
   equatable: ^2.0.5
@@ -53,10 +53,5 @@ flutter:
     - assets/images/
     - assets/icons/
 
-  fonts:
-    - family: Courier
-      fonts:
-        - asset: fonts/Courier.ttf
-    - family: VT323
-      fonts:
-        - asset: fonts/VT323-Regular.ttf
+  # Fonts are intentionally not bundled right now.
+  # If you add custom font files later, re-enable the `fonts:` section.

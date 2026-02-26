@@ -4,7 +4,16 @@ class ResponsiveLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Responsive Layout')),
+      appBar: AppBar(
+        title: Text('Responsive Layout'),
+        actions: [
+          IconButton(
+            tooltip: 'Open Scrollable Views',
+            icon: const Icon(Icons.view_list),
+            onPressed: () => Navigator.pushNamed(context, '/scrollable-views'),
+          ),
+        ],
+      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth > 600) {

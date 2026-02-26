@@ -105,7 +105,6 @@ class _MultiScreenNavigationDemoScreenState
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-    final isMobileDevice = responsive.isMobile;
 
     return Scaffold(
       appBar: AppBar(
@@ -147,7 +146,7 @@ class _MultiScreenNavigationDemoScreenState
                   SizedBox(height: responsive.spacingSmall),
                   Text(
                     'Total navigations: $_navigationCount',
-                    style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
+                    style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: 14)),
                   ),
                   if (_returnedData != null) ...[
                     SizedBox(height: responsive.spacingSmall),
@@ -160,7 +159,7 @@ class _MultiScreenNavigationDemoScreenState
                       child: Text(
                         '✅ Returned: $_returnedData',
                         style: TextStyle(
-                          fontSize: responsive.responsiveFontSize(mobileSize: ),
+                          fontSize: responsive.responsiveFontSize(mobileSize: 14),
                           color: RetroColors.retroGreen,
                         ),
                       ),
@@ -175,7 +174,7 @@ class _MultiScreenNavigationDemoScreenState
             Text(
               '📍 Navigation Examples',
               style: TextStyle(
-                fontSize: responsive.responsiveFontSize(mobileSize: ),
+                fontSize: responsive.responsiveFontSize(mobileSize: 18),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -219,7 +218,7 @@ class _MultiScreenNavigationDemoScreenState
             Text(
               '💻 Code Patterns',
               style: TextStyle(
-                fontSize: responsive.responsiveFontSize(mobileSize: ),
+                fontSize: responsive.responsiveFontSize(mobileSize: 18),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -266,7 +265,7 @@ class _MultiScreenNavigationDemoScreenState
             Text(
               '🎯 Key Concepts',
               style: TextStyle(
-                fontSize: responsive.responsiveFontSize(mobileSize: ),
+                fontSize: responsive.responsiveFontSize(mobileSize: 18),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -315,7 +314,7 @@ class _MultiScreenNavigationDemoScreenState
               Text(
                 '📜 Navigation History',
                 style: TextStyle(
-                  fontSize: responsive.responsiveFontSize(mobileSize: ),
+                  fontSize: responsive.responsiveFontSize(mobileSize: 18),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -343,7 +342,7 @@ class _MultiScreenNavigationDemoScreenState
                             entry.value,
                             style: TextStyle(
                               color: RetroColors.retroGreen,
-                              fontSize: responsive.responsiveFontSize(mobileSize: ),
+                              fontSize: responsive.responsiveFontSize(mobileSize: 12),
                               fontFamily: 'monospace',
                             ),
                           ),
@@ -373,13 +372,13 @@ class _MultiScreenNavigationDemoScreenState
         title: Text(
           title,
           style: TextStyle(
-            fontSize: responsive.responsiveFontSize(mobileSize: ),
+            fontSize: responsive.responsiveFontSize(mobileSize: 16),
             fontWeight: FontWeight.bold,
           ),
         ),
         subtitle: Text(
           description,
-          style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
+          style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: 13)),
         ),
         trailing: Icon(
           Icons.arrow_forward,
@@ -410,7 +409,7 @@ class _MultiScreenNavigationDemoScreenState
             title,
             style: TextStyle(
               color: RetroColors.retroYellow,
-              fontSize: responsive.responsiveFontSize(mobileSize: ),
+              fontSize: responsive.responsiveFontSize(mobileSize: 14),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -419,7 +418,7 @@ class _MultiScreenNavigationDemoScreenState
             code,
             style: TextStyle(
               color: Colors.green[400],
-              fontSize: responsive.responsiveFontSize(mobileSize: ),
+              fontSize: responsive.responsiveFontSize(mobileSize: 12),
               fontFamily: 'monospace',
             ),
           ),
@@ -446,7 +445,7 @@ class _MultiScreenNavigationDemoScreenState
           Text(
             title,
             style: TextStyle(
-              fontSize: responsive.responsiveFontSize(mobileSize: ),
+              fontSize: responsive.responsiveFontSize(mobileSize: 15),
               fontWeight: FontWeight.bold,
               color: RetroColors.retroRed,
             ),
@@ -454,7 +453,7 @@ class _MultiScreenNavigationDemoScreenState
           SizedBox(height: 4),
           Text(
             description,
-            style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
+            style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: 13)),
           ),
         ],
       ),
@@ -492,7 +491,7 @@ class BasicExampleScreen extends StatelessWidget {
                   Text(
                     '1️⃣ Basic Navigation',
                     style: TextStyle(
-                      fontSize: responsive.responsiveFontSize(mobileSize: ),
+                      fontSize: responsive.responsiveFontSize(mobileSize: 18),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -501,14 +500,14 @@ class BasicExampleScreen extends StatelessWidget {
                     'This screen was opened with:\n'
                     'Navigator.pushNamed(context, \'/navigation/basic\')',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
+                    style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: 14)),
                   ),
                   SizedBox(height: responsive.spacingMedium),
                   Text(
                     'Each push() adds a new layer to the navigation stack.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: responsive.responsiveFontSize(mobileSize: ),
+                      fontSize: responsive.responsiveFontSize(mobileSize: 13),
                       fontStyle: FontStyle.italic,
                     ),
                   ),
@@ -563,14 +562,14 @@ class DataPassingScreen extends StatelessWidget {
                   Text(
                     '2️⃣ Data Passing',
                     style: TextStyle(
-                      fontSize: responsive.responsiveFontSize(mobileSize: ),
+                      fontSize: responsive.responsiveFontSize(mobileSize: 18),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: responsive.spacingMedium),
                   Text(
                     'Received Message:',
-                    style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
+                    style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: 14)),
                   ),
                   SizedBox(height: responsive.spacingSmall),
                   Container(
@@ -583,7 +582,7 @@ class DataPassingScreen extends StatelessWidget {
                       message,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: responsive.responsiveFontSize(mobileSize: ),
+                        fontSize: responsive.responsiveFontSize(mobileSize: 14),
                         color: RetroColors.retroGreen,
                         fontFamily: 'monospace',
                       ),
@@ -594,7 +593,7 @@ class DataPassingScreen extends StatelessWidget {
                     'Arguments are passed via the arguments parameter.\n'
                     'Received using ModalRoute.of(context).settings.arguments',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
+                    style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: 13)),
                   ),
                 ],
               ),
@@ -654,7 +653,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Text(
                     '3️⃣ Settings with Structured Data',
                     style: TextStyle(
-                      fontSize: responsive.responsiveFontSize(mobileSize: ),
+                      fontSize: responsive.responsiveFontSize(mobileSize: 18),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -760,7 +759,7 @@ class _WizardScreenState extends State<WizardScreen> {
               child: Text(
                 'Step $_currentStep of 3',
                 style: TextStyle(
-                  fontSize: responsive.responsiveFontSize(mobileSize: ),
+                  fontSize: responsive.responsiveFontSize(mobileSize: 16),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -834,7 +833,7 @@ class _WizardScreenState extends State<WizardScreen> {
           children: [
             Text(
               'Step 1: Welcome',
-              style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
+              style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: 16)),
             ),
             SizedBox(height: responsive.spacingMedium),
             Text(
@@ -850,7 +849,7 @@ class _WizardScreenState extends State<WizardScreen> {
           children: [
             Text(
               'Step 2: Configuration',
-              style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
+              style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: 16)),
             ),
             SizedBox(height: responsive.spacingMedium),
             Text(
@@ -866,7 +865,7 @@ class _WizardScreenState extends State<WizardScreen> {
           children: [
             Text(
               'Step 3: Review & Complete',
-              style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: )),
+              style: TextStyle(fontSize: responsive.responsiveFontSize(mobileSize: 16)),
             ),
             SizedBox(height: responsive.spacingMedium),
             Text(

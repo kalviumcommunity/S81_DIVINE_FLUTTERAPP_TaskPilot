@@ -21,6 +21,9 @@ class RetroColors {
   static const Color pastelYellow = Color(0xFFFFFFCC);
   static const Color pastelGreen = Color(0xFFB0F8B0);
 
+  // Aliases used in demos
+  static const Color retroPink = pastelPink;
+
   // Status Colors
   static const Color success = Color(0xFF00DA6F);
   static const Color warning = Color(0xFFFFB81C);
@@ -37,8 +40,8 @@ class RetroColors {
 
 /// Retro Typography
 class RetroTypography {
-  static const FontFamily courierNew = 'Courier';
-  static const FontFamily vt323 = 'VT323';
+  static const String courierNew = 'Courier';
+  static const String vt323 = 'VT323';
 
   // Text Styles
   static const TextStyle retroDisplayLarge = TextStyle(
@@ -85,9 +88,6 @@ class RetroTypography {
     color: RetroColors.retroGray,
   );
 }
-
-/// Enum for font families
-enum FontFamily { courier, vt323 }
 
 /// Retro Shadows & Depth Effects
 class RetroEffects {

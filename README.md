@@ -96,6 +96,90 @@ Widget _buildNarrowLayout() {
 
 ---
 
+## 🧾 Scrollable Views with ListView & GridView
+
+This lesson adds a dedicated screen demonstrating how to build smooth, scrollable UIs using:
+
+- `ListView.builder` (horizontal cards)
+- `GridView.builder` (responsive grid tiles)
+
+Implementation:
+
+- `flutter_app/lib/screens/scrollable_views.dart`
+
+### ListView (Builder) — Snippet
+
+```dart
+SizedBox(
+  height: 140,
+  child: ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: cards.length,
+    itemBuilder: (context, index) {
+      final card = cards[index];
+      return SizedBox(
+        width: 220,
+        child: RetroCard(
+          child: Row(
+            children: [
+              CircleAvatar(child: Icon(card.icon)),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(card.title),
+                    Text(card.subtitle),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  ),
+)
+```
+
+### GridView (Builder) — Snippet
+
+```dart
+GridView.builder(
+  physics: const NeverScrollableScrollPhysics(),
+  shrinkWrap: true,
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: crossAxisCount,
+    crossAxisSpacing: 16,
+    mainAxisSpacing: 16,
+  ),
+  itemCount: tiles.length,
+  itemBuilder: (context, index) {
+    final tile = tiles[index];
+    return RetroCard(
+      child: Center(child: Text(tile.label)),
+    );
+  },
+)
+```
+
+### Screenshots
+
+Add screenshots (after running the app) under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/scrollable_listview.png`
+- `flutter_app/assets/images/scrollable_gridview.png`
+
+![ListView (horizontal)](flutter_app/assets/images/scrollable_listview.png)
+![GridView (responsive)](flutter_app/assets/images/scrollable_gridview.png)
+
+### Reflection
+
+- **How do ListView and GridView improve UI efficiency?** They provide viewport-based rendering and built-in scrolling so large collections stay performant.
+- **Why use builder constructors?** They lazily build only visible items, reducing memory usage and speeding up initial paint.
+- **Performance pitfalls:** nesting scrollables without constraints, using eager `children: []` for big lists, expensive work in `itemBuilder`, and unnecessary `shrinkWrap: true` on large views.
+
 ## 🏗️ Project Structure
 
 ```
