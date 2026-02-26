@@ -93,19 +93,18 @@ Then update the links below:
 
 ## Reflection
 
-### How do ListView and GridView improve UI efficiency?
+### How does ListView differ from GridView in design use cases?
 
-- They provide built-in scrolling + layout behavior with efficient viewport rendering.
-- They’re designed to handle large collections without manually laying out every item at once.
+- `ListView` is best for linear content (messages, tasks, notifications) where each item typically spans the width/row.
+- `GridView` is best for visual/structured collections (dashboards, galleries, catalogs) where multiple items appear per row.
 
-### Why are builder constructors recommended for large data sets?
+### Why is ListView.builder() more efficient for large lists?
 
-- `ListView.builder` / `GridView.builder` build only what’s visible (and a small cache extent), which reduces memory usage and speeds up first render.
-- They scale better because item creation is lazy and incremental.
+- Builder constructors create items lazily (only what’s visible + a small cache), which reduces memory usage and improves scroll performance.
 
-### Common performance pitfalls to avoid
+### What can you do to prevent lag or overflow errors in scrollable views?
 
-- Nesting multiple scrollables without constraints (causes layout exceptions or jank).
-- Using `ListView(children: [...])` with very large lists (builds everything eagerly).
-- Overusing `shrinkWrap: true` on large lists/grids (forces extra layout work) unless required.
-- Putting expensive work in `itemBuilder` (heavy images, synchronous computations) without caching/optimization.
+- Avoid nesting multiple scrollables unless you constrain one (e.g., `NeverScrollableScrollPhysics` + `shrinkWrap` when embedding).
+- Prefer `ListView.builder` / `GridView.builder` over eager `children: []` for large datasets.
+- Keep `itemBuilder` light; cache expensive work (images, formatting) and avoid heavy synchronous computation.
+- Use responsive sizing (`LayoutBuilder`, adaptive crossAxisCount) to prevent tight layouts and text overflow.

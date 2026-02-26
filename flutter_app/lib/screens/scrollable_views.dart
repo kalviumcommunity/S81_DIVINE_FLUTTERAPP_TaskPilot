@@ -55,6 +55,9 @@ class ScrollableViewsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Scrollable Views'),
@@ -70,13 +73,13 @@ class ScrollableViewsScreen extends StatelessWidget {
               children: [
                 Text(
                   'ListView (horizontal)',
-                  style: RetroTypography.retroHeadline,
+                  style: textTheme.headlineSmall,
                 ),
                 const SizedBox(height: RetroSpacing.sm),
                 Text(
                   'Efficient for long/dynamic lists using ListView.builder.',
-                  style: RetroTypography.retroBody.copyWith(
-                    color: RetroColors.retroGray,
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
                 const SizedBox(height: RetroSpacing.md),
@@ -100,10 +103,10 @@ class ScrollableViewsScreen extends StatelessWidget {
                               children: [
                                 CircleAvatar(
                                   backgroundColor:
-                                      RetroColors.neonCyan.withOpacity(0.15),
+                                      colorScheme.secondary.withOpacity(0.15),
                                   child: Icon(
                                     card.icon,
-                                    color: RetroColors.neonPurple,
+                                    color: colorScheme.primary,
                                   ),
                                 ),
                                 const SizedBox(width: RetroSpacing.md),
@@ -115,16 +118,15 @@ class ScrollableViewsScreen extends StatelessWidget {
                                     children: [
                                       Text(
                                         card.title,
-                                        style: RetroTypography.retroTitle,
+                                        style: textTheme.titleMedium,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       const SizedBox(height: 6),
                                       Text(
                                         card.subtitle,
-                                        style:
-                                            RetroTypography.retroBody.copyWith(
-                                          color: RetroColors.retroGray,
+                                        style: textTheme.bodyMedium?.copyWith(
+                                          color: colorScheme.onSurfaceVariant,
                                         ),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
@@ -145,13 +147,13 @@ class ScrollableViewsScreen extends StatelessWidget {
                 const SizedBox(height: RetroSpacing.lg),
                 Text(
                   'GridView (responsive)',
-                  style: RetroTypography.retroHeadline,
+                  style: textTheme.headlineSmall,
                 ),
                 const SizedBox(height: RetroSpacing.sm),
                 Text(
                   'Great for galleries/dashboards. Uses GridView.builder for performance.',
-                  style: RetroTypography.retroBody.copyWith(
-                    color: RetroColors.retroGray,
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
                 const SizedBox(height: RetroSpacing.md),
@@ -182,9 +184,7 @@ class ScrollableViewsScreen extends StatelessWidget {
                           const SizedBox(height: RetroSpacing.sm),
                           Text(
                             tile.label,
-                            style: RetroTypography.retroTitle.copyWith(
-                              color: RetroColors.retroBlack,
-                            ),
+                            style: textTheme.titleMedium,
                             textAlign: TextAlign.center,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
