@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/taskpilot_like_button.dart';
+import '../widgets/taskpilot_primary_button.dart';
+
 class UserInputForm extends StatefulWidget {
   const UserInputForm({Key? key}) : super(key: key);
 
@@ -57,7 +60,12 @@ class _UserInputFormState extends State<UserInputForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('User Input Form')),
+      appBar: AppBar(
+        title: const Text('User Input Form'),
+        actions: const [
+          TaskPilotLikeButton(),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -87,12 +95,9 @@ class _UserInputFormState extends State<UserInputForm> {
                 onFieldSubmitted: (_) => _submit(),
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
+              TaskPilotPrimaryButton(
+                label: 'Submit',
                 onPressed: _submit,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12.0),
-                  child: Text('Submit'),
-                ),
               ),
             ],
           ),

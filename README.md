@@ -299,6 +299,80 @@ Add screenshots under `flutter_app/assets/images/`:
 - **Why is setState() important?** It tells Flutter “state changed” so the framework rebuilds the widget subtree with new values.
 - **Improper setState() impacts:** Calling it too often or from the wrong place (e.g., inside `build`) can cause unnecessary rebuilds, jank, or infinite loops.
 
+---
+
+## 🧩 Reusable Custom Widgets (Modular UI)
+
+This lesson demonstrates how to refactor repeated UI into reusable widgets so screens stay clean and consistent.
+
+Custom widgets added:
+
+- `flutter_app/lib/widgets/taskpilot_primary_button.dart` (Stateless)
+- `flutter_app/lib/widgets/taskpilot_like_button.dart` (Stateful)
+
+Reused in multiple screens:
+
+- `flutter_app/lib/screens/user_input_form.dart`
+- `flutter_app/lib/screens/state_management_demo.dart`
+
+### Stateless Custom Widget — Primary Button (Snippet)
+
+```dart
+class TaskPilotPrimaryButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onPressed;
+
+  const TaskPilotPrimaryButton({
+    required this.label,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RetroButton(label: label, onPressed: onPressed);
+  }
+}
+```
+
+### Stateful Custom Widget — Like Button (Snippet)
+
+```dart
+class TaskPilotLikeButton extends StatefulWidget {
+  const TaskPilotLikeButton({super.key});
+
+  @override
+  State<TaskPilotLikeButton> createState() => _TaskPilotLikeButtonState();
+}
+
+class _TaskPilotLikeButtonState extends State<TaskPilotLikeButton> {
+  bool _isLiked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(_isLiked ? Icons.favorite : Icons.favorite_border),
+      onPressed: () => setState(() => _isLiked = !_isLiked),
+    );
+  }
+}
+```
+
+### Screenshots
+
+Add screenshots under `flutter_app/assets/images/` showing the widgets used in at least two places:
+
+- `flutter_app/assets/images/custom_widget_form.png` (User Input Form screen)
+- `flutter_app/assets/images/custom_widget_state_demo.png` (State Management Demo screen)
+
+![Custom widgets in form](flutter_app/assets/images/custom_widget_form.png)
+![Custom widgets in state demo](flutter_app/assets/images/custom_widget_state_demo.png)
+
+### Reflection
+
+- **How do reusable widgets improve efficiency?** Changes happen in one place, UI stays consistent, and screens become smaller/easier to maintain.
+- **Challenges in modular components:** Picking good widget boundaries (too small becomes noisy; too big becomes rigid) and designing APIs (props) that are flexible but simple.
+- **How a team can apply this:** Create a shared widget library (buttons, cards, input fields) aligned to the design system so every feature reuses the same building blocks.
+
 ## 🏗️ Project Structure
 
 ```

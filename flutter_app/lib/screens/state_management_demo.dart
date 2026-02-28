@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../constants/retro_theme.dart';
+import '../widgets/taskpilot_like_button.dart';
+import '../widgets/taskpilot_primary_button.dart';
+
 class StateManagementDemo extends StatefulWidget {
   const StateManagementDemo({Key? key}) : super(key: key);
 
@@ -29,7 +33,12 @@ class _StateManagementDemoState extends State<StateManagementDemo> {
         _counter >= 5 ? colorScheme.secondaryContainer : colorScheme.surface;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('State Management Demo')),
+      appBar: AppBar(
+        title: const Text('State Management Demo'),
+        actions: const [
+          TaskPilotLikeButton(),
+        ],
+      ),
       body: Container(
         color: backgroundColor,
         width: double.infinity,
@@ -57,14 +66,20 @@ class _StateManagementDemoState extends State<StateManagementDemo> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
+                  TaskPilotPrimaryButton(
+                    label: 'Increment',
                     onPressed: _incrementCounter,
-                    child: const Text('Increment'),
+                    backgroundColor: RetroColors.neonGreen,
+                    textColor: RetroColors.retroBlack,
+                    fullWidth: false,
                   ),
                   const SizedBox(width: 10),
-                  ElevatedButton(
+                  TaskPilotPrimaryButton(
+                    label: 'Decrement',
                     onPressed: _decrementCounter,
-                    child: const Text('Decrement'),
+                    backgroundColor: RetroColors.neonOrange,
+                    textColor: RetroColors.retroBlack,
+                    fullWidth: false,
                   ),
                 ],
               ),
@@ -75,3 +90,4 @@ class _StateManagementDemoState extends State<StateManagementDemo> {
     );
   }
 }
+
