@@ -502,6 +502,96 @@ Add screenshots under `flutter_app/assets/images/`:
 - **Common pubspec errors:** wrong indentation, wrong folder name, or mismatched paths (case-sensitive on many platforms).
 - **Scalability benefit:** consistent naming + folder structure prevents broken UI, makes assets discoverable, and keeps teams aligned as the project grows.
 
+---
+
+## 🎞️ Flutter Animations & Transitions
+
+This lesson adds a demo screen that showcases:
+
+- **Implicit animations**: `AnimatedContainer`, `AnimatedOpacity`
+- **Explicit animations**: `AnimationController` + `RotationTransition`
+- **Page transitions**: `PageRouteBuilder` + `SlideTransition`
+
+Implementation:
+
+- `flutter_app/lib/screens/animations_transitions_demo.dart`
+- Route: `/animations-transitions-demo`
+
+### Implicit Animation (Snippet)
+
+```dart
+AnimatedContainer(
+  duration: const Duration(milliseconds: 800),
+  curve: Curves.easeInOut,
+  width: _toggled ? 220 : 140,
+  height: _toggled ? 140 : 220,
+)
+
+AnimatedOpacity(
+  duration: const Duration(milliseconds: 800),
+  opacity: _toggled ? 1.0 : 0.25,
+  child: Image.asset('assets/images/logo.png', width: 120),
+)
+```
+
+### Explicit Animation (Snippet)
+
+```dart
+late final AnimationController _controller;
+
+@override
+void initState() {
+  super.initState();
+  _controller = AnimationController(
+    duration: const Duration(seconds: 2),
+    vsync: this,
+  )..repeat(reverse: true);
+}
+
+RotationTransition(
+  turns: _controller,
+  child: Image.asset('assets/images/logo.png', width: 90),
+)
+```
+
+### Page Transition (Snippet)
+
+```dart
+Navigator.of(context).push(
+  PageRouteBuilder(
+    transitionDuration: const Duration(milliseconds: 700),
+    pageBuilder: (_, __, ___) => const NextPage(),
+    transitionsBuilder: (_, animation, __, child) {
+      return SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(1.0, 0.0),
+          end: Offset.zero,
+        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut)),
+        child: child,
+      );
+    },
+  ),
+);
+```
+
+### Screenshots / GIFs
+
+Add captures under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/animation_implicit.png`
+- `flutter_app/assets/images/animation_explicit_rotation.png`
+- `flutter_app/assets/images/animation_page_transition.png`
+
+![Implicit animation](flutter_app/assets/images/animation_implicit.png)
+![Explicit rotation](flutter_app/assets/images/animation_explicit_rotation.png)
+![Page transition](flutter_app/assets/images/animation_page_transition.png)
+
+### Reflection
+
+- **Why are animations important for UX?** They provide feedback, guide attention, and make navigation/actions feel natural.
+- **Implicit vs explicit animations:** Implicit widgets animate automatically when values change; explicit animations use controllers for fine-grained control.
+- **Team application:** Standardize animation durations/curves and wrap common transitions into reusable helpers for consistent polish across features.
+
 ## 🏗️ Project Structure
 
 ```

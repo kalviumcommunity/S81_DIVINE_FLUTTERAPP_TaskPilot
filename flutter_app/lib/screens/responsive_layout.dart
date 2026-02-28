@@ -25,6 +25,10 @@ class ResponsiveLayout extends StatelessWidget {
                 child: Text('Assets Demo'),
               ),
               PopupMenuItem(
+                value: '/animations-transitions-demo',
+                child: Text('Animations & Transitions'),
+              ),
+              PopupMenuItem(
                 value: '/state-management-demo',
                 child: Text('State Management Demo'),
               ),

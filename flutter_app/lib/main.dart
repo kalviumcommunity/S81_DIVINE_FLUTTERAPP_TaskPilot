@@ -11,6 +11,7 @@ import 'screens/user_input_form.dart';
 import 'screens/state_management_demo.dart';
 import 'screens/responsive_design_demo.dart';
 import 'screens/assets_demo_screen.dart';
+import 'screens/animations_transitions_demo.dart';
 
 void main() {
   runApp(const TaskPilotApp());
@@ -38,6 +39,7 @@ class TaskPilotApp extends StatelessWidget {
         '/state-management-demo': (context) => const StateManagementDemo(),
         '/responsive-design-demo': (context) => const ResponsiveDesignDemo(),
         '/assets-demo': (context) => const AssetsDemoScreen(),
+        '/animations-transitions-demo': (context) => const AnimationsTransitionsDemo(),
 
         // Internal routes used by MultiScreenNavigationDemoScreen
         '/navigation/basic': (context) => const BasicExampleScreen(),
