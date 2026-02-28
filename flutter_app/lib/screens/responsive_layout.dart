@@ -25,6 +25,10 @@ class ResponsiveLayout extends StatelessWidget {
                 child: Text('Assets Demo'),
               ),
               PopupMenuItem(
+                value: '/firebase-setup',
+                child: Text('Firebase Setup Status'),
+              ),
+              PopupMenuItem(
                 value: '/animations-transitions-demo',
                 child: Text('Animations & Transitions'),
               ),

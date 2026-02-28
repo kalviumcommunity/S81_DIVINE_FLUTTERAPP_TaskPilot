@@ -5,6 +5,14 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Apply Google Services only when the config file is present.
+// This keeps builds working before you download `google-services.json`.
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
+} else {
+    logger.warn("google-services.json not found in android/app; skipping Google Services plugin.")
+}
+
 android {
     namespace = "com.example.taskpilot"
     compileSdk = flutter.compileSdkVersion

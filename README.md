@@ -592,6 +592,69 @@ Add captures under `flutter_app/assets/images/`:
 - **Implicit vs explicit animations:** Implicit widgets animate automatically when values change; explicit animations use controllers for fine-grained control.
 - **Team application:** Standardize animation durations/curves and wrap common transitions into reusable helpers for consistent polish across features.
 
+---
+
+## 🔥 Firebase Integration Setup
+
+This lesson wires the app to initialize Firebase and provides a status screen to verify the connection.
+
+Implementation:
+
+- `flutter_app/lib/utils/firebase_initializer.dart` (safe initializer)
+- `flutter_app/lib/screens/firebase_setup_screen.dart` (verification UI)
+- Route: `/firebase-setup`
+
+### Android Setup (Steps)
+
+1) Firebase Console → **Add project**
+2) Add an **Android app** to the project
+3) Use package name: `com.example.taskpilot` (from `flutter_app/android/app/build.gradle.kts`)
+4) Download `google-services.json`
+5) Place it here:
+
+```
+flutter_app/android/app/google-services.json
+```
+
+6) Run:
+
+```bash
+flutter pub get
+flutter run
+```
+
+7) In the app: Home → **Open Demos** → **Firebase Setup Status**
+
+### main.dart Initialization (Snippet)
+
+```dart
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeFirebaseSafely();
+  runApp(const TaskPilotApp());
+}
+```
+
+### Gradle Note
+
+- The Google Services plugin is configured, but only applied when `google-services.json` exists. This prevents build failures before the file is added.
+
+### Verification (Screenshots)
+
+Add proof under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/firebase_console_app_added.png` (Firebase Console → app registered)
+- `flutter_app/assets/images/firebase_setup_status_screen.png` (in-app status screen)
+
+![Firebase console proof](flutter_app/assets/images/firebase_console_app_added.png)
+![Firebase status screen](flutter_app/assets/images/firebase_setup_status_screen.png)
+
+### Reflection
+
+- **Most important step:** matching the correct package name and placing `google-services.json` in `android/app/`.
+- **Common errors:** wrong YAML/Gradle config, missing config file, or mismatched package name.
+- **How this prepares the app:** once initialized, you can reliably use Auth/Firestore/Storage/FCM without redoing platform setup.
+
 ## 🏗️ Project Structure
 
 ```

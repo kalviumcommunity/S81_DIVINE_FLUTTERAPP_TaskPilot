@@ -12,8 +12,13 @@ import 'screens/state_management_demo.dart';
 import 'screens/responsive_design_demo.dart';
 import 'screens/assets_demo_screen.dart';
 import 'screens/animations_transitions_demo.dart';
+import 'screens/firebase_setup_screen.dart';
+import 'utils/firebase_initializer.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Defensive init: app still runs even if config files are missing.
+  await initializeFirebaseSafely();
   runApp(const TaskPilotApp());
 }
 
@@ -40,6 +45,7 @@ class TaskPilotApp extends StatelessWidget {
         '/responsive-design-demo': (context) => const ResponsiveDesignDemo(),
         '/assets-demo': (context) => const AssetsDemoScreen(),
         '/animations-transitions-demo': (context) => const AnimationsTransitionsDemo(),
+        '/firebase-setup': (context) => const FirebaseSetupScreen(),
 
         // Internal routes used by MultiScreenNavigationDemoScreen
         '/navigation/basic': (context) => const BasicExampleScreen(),
@@ -51,3 +57,4 @@ class TaskPilotApp extends StatelessWidget {
     );
   }
 }
+
