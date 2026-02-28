@@ -12,6 +12,20 @@ class ResponsiveLayout extends StatelessWidget {
             icon: const Icon(Icons.view_list),
             onPressed: () => Navigator.pushNamed(context, '/scrollable-views'),
           ),
+          PopupMenuButton<String>(
+            tooltip: 'Open Demos',
+            onSelected: (routeName) => Navigator.pushNamed(context, routeName),
+            itemBuilder: (context) => const [
+              PopupMenuItem(
+                value: '/user-input-form',
+                child: Text('User Input Form'),
+              ),
+              PopupMenuItem(
+                value: '/state-management-demo',
+                child: Text('State Management Demo'),
+              ),
+            ],
+          ),
         ],
       ),
       body: LayoutBuilder(

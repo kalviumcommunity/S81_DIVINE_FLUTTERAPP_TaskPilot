@@ -180,6 +180,125 @@ Add screenshots (after running the app) under `flutter_app/assets/images/`:
 - **Why use builder constructors?** They lazily build only visible items, reducing memory usage and speeding up initial paint.
 - **Performance pitfalls:** nesting scrollables without constraints, using eager `children: []` for big lists, expensive work in `itemBuilder`, and unnecessary `shrinkWrap: true` on large views.
 
+---
+
+## 🧾 Handling User Input with Forms (TextFields + Button + Validation)
+
+This lesson adds a simple user input form with validation and dynamic feedback.
+
+Implementation:
+
+- `flutter_app/lib/screens/user_input_form.dart`
+- Route: `/user-input-form`
+
+### How to Open
+
+- Run: `flutter run`
+- From the home screen (**Responsive Layout**), open the AppBar overflow menu (**Open Demos**) → **User Input Form**.
+
+### TextFormField + Validation (Snippet)
+
+```dart
+TextFormField(
+  controller: _emailController,
+  decoration: const InputDecoration(
+    labelText: 'Email',
+    border: OutlineInputBorder(),
+  ),
+  keyboardType: TextInputType.emailAddress,
+  validator: _validateEmail,
+)
+```
+
+### Submit Button + SnackBar Feedback (Snippet)
+
+```dart
+ElevatedButton(
+  onPressed: _submit,
+  child: const Text('Submit'),
+)
+
+void _submit() {
+  if (_formKey.currentState?.validate() ?? false) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Form Submitted Successfully!')),
+    );
+  }
+}
+```
+
+### Screenshots
+
+Add screenshots under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/form_before_input.png`
+- `flutter_app/assets/images/form_validation_errors.png`
+- `flutter_app/assets/images/form_success_snackbar.png`
+
+![Form before input](flutter_app/assets/images/form_before_input.png)
+![Validation errors](flutter_app/assets/images/form_validation_errors.png)
+![Success SnackBar](flutter_app/assets/images/form_success_snackbar.png)
+
+### Reflection
+
+- **Why is input validation important in mobile apps?** It prevents bad data, reduces user frustration, and improves trust by giving instant, clear correction.
+- **TextField vs TextFormField:** `TextField` is basic input; `TextFormField` integrates with `Form` and supports validators + form state.
+- **How does form state management simplify validation?** `Form` + `GlobalKey<FormState>` lets you validate all fields together (`validate()`), coordinate submission, and show per-field errors consistently.
+
+---
+
+## 🔁 Managing Local UI State with setState()
+
+This lesson demonstrates local UI updates using `StatefulWidget` + `setState()`.
+
+Implementation:
+
+- `flutter_app/lib/screens/state_management_demo.dart`
+- Route: `/state-management-demo`
+
+### How to Open
+
+- Run: `flutter run`
+- From the home screen (**Responsive Layout**), open the AppBar overflow menu (**Open Demos**) → **State Management Demo**.
+
+### setState Counter Update (Snippet)
+
+```dart
+int _counter = 0;
+
+void _incrementCounter() {
+  setState(() {
+    _counter++;
+  });
+}
+```
+
+### Conditional UI Change (Threshold)
+
+The background changes once the counter reaches a threshold, using theme colors:
+
+```dart
+final colorScheme = Theme.of(context).colorScheme;
+final backgroundColor =
+    _counter >= 5 ? colorScheme.secondaryContainer : colorScheme.surface;
+```
+
+### Screenshots
+
+Add screenshots under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/state_counter_0.png`
+- `flutter_app/assets/images/state_counter_5_threshold.png`
+
+![Counter at 0](flutter_app/assets/images/state_counter_0.png)
+![Threshold reached](flutter_app/assets/images/state_counter_5_threshold.png)
+
+### Reflection
+
+- **Stateless vs Stateful widgets:** Stateless widgets don’t hold mutable UI state; Stateful widgets can update UI over time as state changes.
+- **Why is setState() important?** It tells Flutter “state changed” so the framework rebuilds the widget subtree with new values.
+- **Improper setState() impacts:** Calling it too often or from the wrong place (e.g., inside `build`) can cause unnecessary rebuilds, jank, or infinite loops.
+
 ## 🏗️ Project Structure
 
 ```

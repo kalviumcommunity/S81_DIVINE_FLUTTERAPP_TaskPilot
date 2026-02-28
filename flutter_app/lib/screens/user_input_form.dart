@@ -4,7 +4,7 @@ class UserInputForm extends StatefulWidget {
   const UserInputForm({Key? key}) : super(key: key);
 
   @override
-  _UserInputFormState createState() => _UserInputFormState();
+  State<UserInputForm> createState() => _UserInputFormState();
 }
 
 class _UserInputFormState extends State<UserInputForm> {
