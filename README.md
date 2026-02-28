@@ -373,6 +373,58 @@ Add screenshots under `flutter_app/assets/images/` showing the widgets used in a
 - **Challenges in modular components:** Picking good widget boundaries (too small becomes noisy; too big becomes rigid) and designing APIs (props) that are flexible but simple.
 - **How a team can apply this:** Create a shared widget library (buttons, cards, input fields) aligned to the design system so every feature reuses the same building blocks.
 
+---
+
+## 📐 Responsive Design with MediaQuery + LayoutBuilder
+
+This lesson adds a dedicated demo screen that adapts layout, padding, and typography for different screen sizes.
+
+Implementation:
+
+- `flutter_app/lib/screens/responsive_design_demo.dart`
+- Route: `/responsive-design-demo`
+
+### How to Open
+
+- Run: `flutter run`
+- From the home screen (**Responsive Layout**), open the AppBar overflow menu (**Open Demos**) → **Responsive Design Demo**.
+
+### MediaQuery (Snippet)
+
+```dart
+final mediaQuery = MediaQuery.of(context);
+final screenWidth = mediaQuery.size.width;
+final screenHeight = mediaQuery.size.height;
+final isPortrait = mediaQuery.orientation == Orientation.portrait;
+```
+
+### LayoutBuilder (Snippet)
+
+```dart
+LayoutBuilder(
+  builder: (context, constraints) {
+    final isTabletLayout = constraints.maxWidth >= 600;
+    return isTabletLayout ? Row(children: [...]) : Column(children: [...]);
+  },
+)
+```
+
+### Screenshots
+
+Add screenshots under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/responsive_demo_mobile.png`
+- `flutter_app/assets/images/responsive_demo_tablet.png`
+
+![Responsive demo (mobile)](flutter_app/assets/images/responsive_demo_mobile.png)
+![Responsive demo (tablet)](flutter_app/assets/images/responsive_demo_tablet.png)
+
+### Reflection
+
+- **Why is responsiveness important?** It keeps layouts usable and readable across phones/tablets/orientations and prevents overflow/distortion.
+- **LayoutBuilder vs MediaQuery:** `MediaQuery` provides device metrics (size/orientation). `LayoutBuilder` provides parent constraints and is ideal for conditional widget trees.
+- **How teams scale with this:** Standardize breakpoints and build adaptive components (cards, grids, forms) that use constraints + relative sizing for consistent UX.
+
 ## 🏗️ Project Structure
 
 ```
