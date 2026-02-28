@@ -7,6 +7,7 @@ import 'screens/multi_screen_navigation_demo.dart';
 import 'screens/responsive_layouts_demo.dart';
 import 'screens/scrollable_views.dart';
 import 'constants/retro_theme.dart';
+import 'screens/user_input_form.dart';
 
 void main() {
   runApp(const TaskPilotApp());
@@ -30,6 +31,7 @@ class TaskPilotApp extends StatelessWidget {
         '/multi-screen-navigation': (context) => const MultiScreenNavigationDemoScreen(),
         '/responsive-layouts': (context) => const ResponsiveLayoutsDemoScreen(),
         '/scrollable-views': (context) => const ScrollableViewsScreen(),
+        '/user-input-form': (context) => const UserInputForm(),
 
         // Internal routes used by MultiScreenNavigationDemoScreen
         '/navigation/basic': (context) => const BasicExampleScreen(),
