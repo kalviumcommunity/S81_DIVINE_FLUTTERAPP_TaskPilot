@@ -425,6 +425,83 @@ Add screenshots under `flutter_app/assets/images/`:
 - **LayoutBuilder vs MediaQuery:** `MediaQuery` provides device metrics (size/orientation). `LayoutBuilder` provides parent constraints and is ideal for conditional widget trees.
 - **How teams scale with this:** Standardize breakpoints and build adaptive components (cards, grids, forms) that use constraints + relative sizing for consistent UX.
 
+---
+
+## 🖼️ Managing Images, Icons, and Local Assets
+
+This lesson demonstrates how to add local image/icon assets, register them in `pubspec.yaml`, and render them using `Image.asset` + Flutter icons.
+
+Assets structure:
+
+```
+flutter_app/assets/
+  images/
+    logo.png
+    banner.png
+    background.png
+  icons/
+    star.png
+    profile.png
+```
+
+Demo screen:
+
+- `flutter_app/lib/screens/assets_demo_screen.dart`
+- Route: `/assets-demo`
+
+### pubspec.yaml (Snippet)
+
+```yaml
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+```
+
+### Display Local Images (Snippet)
+
+```dart
+Image.asset(
+  'assets/images/logo.png',
+  width: 150,
+  height: 150,
+  fit: BoxFit.cover,
+)
+```
+
+### Use Built-in Icons (Snippet)
+
+```dart
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: const [
+    Icon(Icons.flutter_dash, size: 36),
+    SizedBox(width: 10),
+    Icon(Icons.android, size: 36),
+    SizedBox(width: 10),
+    Icon(Icons.apple, size: 36),
+  ],
+)
+```
+
+### Screenshots
+
+Add screenshots under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/assets_demo_screen.png`
+- `flutter_app/assets/images/pubspec_assets_snippet.png`
+
+![Assets demo screen](flutter_app/assets/images/assets_demo_screen.png)
+![pubspec assets snippet](flutter_app/assets/images/pubspec_assets_snippet.png)
+
+### Reflection
+
+- **Steps to load assets correctly:** place files under an assets folder → register folders in `pubspec.yaml` → run `flutter pub get` → use exact paths in `Image.asset`/`AssetImage`.
+- **Common pubspec errors:** wrong indentation, wrong folder name, or mismatched paths (case-sensitive on many platforms).
+- **Scalability benefit:** consistent naming + folder structure prevents broken UI, makes assets discoverable, and keeps teams aligned as the project grows.
+
 ## 🏗️ Project Structure
 
 ```
