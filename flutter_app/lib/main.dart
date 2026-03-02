@@ -5,9 +5,20 @@ import 'screens/stateless_stateful_demo.dart';
 import 'screens/dev_tools_demo.dart';
 import 'screens/multi_screen_navigation_demo.dart';
 import 'screens/responsive_layouts_demo.dart';
+import 'screens/scrollable_views.dart';
 import 'constants/retro_theme.dart';
+import 'screens/user_input_form.dart';
+import 'screens/state_management_demo.dart';
+import 'screens/responsive_design_demo.dart';
+import 'screens/assets_demo_screen.dart';
+import 'screens/animations_transitions_demo.dart';
+import 'screens/firebase_setup_screen.dart';
+import 'utils/firebase_initializer.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Defensive init: app still runs even if config files are missing.
+  await initializeFirebaseSafely();
   runApp(const TaskPilotApp());
 }
 
@@ -18,109 +29,32 @@ class TaskPilotApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'TaskPilot',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: RetroColors.neonPurple,
-          brightness: Brightness.light,
-        ),
-        // Retro Typography
-        fontFamily: 'Courier',
-        // AppBar Styling
-        appBarTheme: AppBarTheme(
-          backgroundColor: RetroColors.neonPurple,
-          elevation: 8,
-          iconTheme: const IconThemeData(color: RetroColors.retroWhite),
-          titleTextStyle: RetroTypography.retroHeadline.copyWith(
-            color: RetroColors.retroWhite,
-          ),
-        ),
-        // Button Styling
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: RetroColors.neonPurple,
-            foregroundColor: RetroColors.retroWhite,
-            padding: const EdgeInsets.symmetric(
-              horizontal: RetroSpacing.md,
-              vertical: RetroSpacing.sm,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(RetroBorderRadius.sm),
-            ),
-            elevation: 8,
-          ),
-        ),
-        // Text Button Styling
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            foregroundColor: RetroColors.neonPurple,
-            textStyle: RetroTypography.retroBody,
-          ),
-        ),
-        // Input Decoration
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: RetroColors.retroWhite,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(RetroBorderRadius.sm),
-            borderSide: const BorderSide(
-              color: RetroColors.neonPurple,
-              width: 2,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(RetroBorderRadius.sm),
-            borderSide: BorderSide(
-              color: RetroColors.neonPurple.withOpacity(0.5),
-              width: 2,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(RetroBorderRadius.sm),
-            borderSide: const BorderSide(
-              color: RetroColors.neonCyan,
-              width: 2,
-            ),
-          ),
-          labelStyle: RetroTypography.retroLabel,
-          hintStyle: RetroTypography.retroLabel.copyWith(
-            color: RetroColors.retroGray.withOpacity(0.6),
-          ),
-          contentPadding: const EdgeInsets.all(RetroSpacing.md),
-        ),
-        // Card Styling
-        cardTheme: CardTheme(
-          color: RetroColors.retroWhite,
-          elevation: 8,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(RetroBorderRadius.md),
-            side: const BorderSide(
-              color: RetroColors.neonPurple,
-              width: 2,
-            ),
-          ),
-        ),
-        // Scaffold Background
-        scaffoldBackgroundColor: RetroColors.retroWhite,
-      ),
-      darkTheme: ThemeData.dark(
-        useMaterial3: true,
-      ).copyWith(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: RetroColors.neonPurple,
-          brightness: Brightness.dark,
-        ),
-      ),
+      theme: RetroAppTheme.light(),
+      darkTheme: RetroAppTheme.dark(),
       themeMode: ThemeMode.light,
       home: ResponsiveLayout(),
       routes: {
-        '/state-driven-ui': (context) => const StateDrivenUIDemo(),
-        '/stateless-stateful': (context) => const StatelessStatefulDemo(),
-        '/dev-tools': (context) => const DevToolsDemo(),
-        '/multi-screen-navigation': (context) => const MultiScreenNavigationDemo(),
-        '/responsive-layouts': (context) => const ResponsiveLayoutsDemo(),
+        '/state-driven-ui': (context) => const StateDrivenUIDemoScreen(),
+        '/stateless-stateful': (context) => const StatelessStatefulDemoScreen(),
+        '/dev-tools': (context) => const DevToolsDemoScreen(),
+        '/multi-screen-navigation': (context) => const MultiScreenNavigationDemoScreen(),
+        '/responsive-layouts': (context) => const ResponsiveLayoutsDemoScreen(),
+        '/scrollable-views': (context) => const ScrollableViewsScreen(),
+        '/user-input-form': (context) => const UserInputForm(),
+        '/state-management-demo': (context) => const StateManagementDemo(),
+        '/responsive-design-demo': (context) => const ResponsiveDesignDemo(),
+        '/assets-demo': (context) => const AssetsDemoScreen(),
+        '/animations-transitions-demo': (context) => const AnimationsTransitionsDemo(),
+        '/firebase-setup': (context) => const FirebaseSetupScreen(),
+
+        // Internal routes used by MultiScreenNavigationDemoScreen
+        '/navigation/basic': (context) => const BasicExampleScreen(),
+        '/navigation/data': (context) => const DataPassingScreen(),
+        '/navigation/settings': (context) => const SettingsScreen(),
+        '/navigation/wizard': (context) => const WizardScreen(),
       },
       debugShowCheckedModeBanner: false,
     );
   }
 }
+

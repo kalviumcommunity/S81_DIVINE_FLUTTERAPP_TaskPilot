@@ -4,7 +4,46 @@ class ResponsiveLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Responsive Layout')),
+      appBar: AppBar(
+        title: Text('Responsive Layout'),
+        actions: [
+          IconButton(
+            tooltip: 'Open Scrollable Views',
+            icon: const Icon(Icons.view_list),
+            onPressed: () => Navigator.pushNamed(context, '/scrollable-views'),
+          ),
+          PopupMenuButton<String>(
+            tooltip: 'Open Demos',
+            onSelected: (routeName) => Navigator.pushNamed(context, routeName),
+            itemBuilder: (context) => const [
+              PopupMenuItem(
+                value: '/user-input-form',
+                child: Text('User Input Form'),
+              ),
+              PopupMenuItem(
+                value: '/assets-demo',
+                child: Text('Assets Demo'),
+              ),
+              PopupMenuItem(
+                value: '/firebase-setup',
+                child: Text('Firebase Setup Status'),
+              ),
+              PopupMenuItem(
+                value: '/animations-transitions-demo',
+                child: Text('Animations & Transitions'),
+              ),
+              PopupMenuItem(
+                value: '/state-management-demo',
+                child: Text('State Management Demo'),
+              ),
+              PopupMenuItem(
+                value: '/responsive-design-demo',
+                child: Text('Responsive Design Demo'),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth > 600) {

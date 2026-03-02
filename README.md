@@ -96,6 +96,565 @@ Widget _buildNarrowLayout() {
 
 ---
 
+## 🧾 Scrollable Views with ListView & GridView
+
+This lesson adds a dedicated screen demonstrating how to build smooth, scrollable UIs using:
+
+- `ListView.builder` (horizontal cards)
+- `GridView.builder` (responsive grid tiles)
+
+Implementation:
+
+- `flutter_app/lib/screens/scrollable_views.dart`
+
+### ListView (Builder) — Snippet
+
+```dart
+SizedBox(
+  height: 140,
+  child: ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: cards.length,
+    itemBuilder: (context, index) {
+      final card = cards[index];
+      return SizedBox(
+        width: 220,
+        child: RetroCard(
+          child: Row(
+            children: [
+              CircleAvatar(child: Icon(card.icon)),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(card.title),
+                    Text(card.subtitle),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  ),
+)
+```
+
+### GridView (Builder) — Snippet
+
+```dart
+GridView.builder(
+  physics: const NeverScrollableScrollPhysics(),
+  shrinkWrap: true,
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: crossAxisCount,
+    crossAxisSpacing: 16,
+    mainAxisSpacing: 16,
+  ),
+  itemCount: tiles.length,
+  itemBuilder: (context, index) {
+    final tile = tiles[index];
+    return RetroCard(
+      child: Center(child: Text(tile.label)),
+    );
+  },
+)
+```
+
+### Screenshots
+
+Add screenshots (after running the app) under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/scrollable_listview.png`
+- `flutter_app/assets/images/scrollable_gridview.png`
+
+![ListView (horizontal)](flutter_app/assets/images/scrollable_listview.png)
+![GridView (responsive)](flutter_app/assets/images/scrollable_gridview.png)
+
+### Reflection
+
+- **How do ListView and GridView improve UI efficiency?** They provide viewport-based rendering and built-in scrolling so large collections stay performant.
+- **Why use builder constructors?** They lazily build only visible items, reducing memory usage and speeding up initial paint.
+- **Performance pitfalls:** nesting scrollables without constraints, using eager `children: []` for big lists, expensive work in `itemBuilder`, and unnecessary `shrinkWrap: true` on large views.
+
+---
+
+## 🧾 Handling User Input with Forms (TextFields + Button + Validation)
+
+This lesson adds a simple user input form with validation and dynamic feedback.
+
+Implementation:
+
+- `flutter_app/lib/screens/user_input_form.dart`
+- Route: `/user-input-form`
+
+### How to Open
+
+- Run: `flutter run`
+- From the home screen (**Responsive Layout**), open the AppBar overflow menu (**Open Demos**) → **User Input Form**.
+
+### TextFormField + Validation (Snippet)
+
+```dart
+TextFormField(
+  controller: _emailController,
+  decoration: const InputDecoration(
+    labelText: 'Email',
+    border: OutlineInputBorder(),
+  ),
+  keyboardType: TextInputType.emailAddress,
+  validator: _validateEmail,
+)
+```
+
+### Submit Button + SnackBar Feedback (Snippet)
+
+```dart
+ElevatedButton(
+  onPressed: _submit,
+  child: const Text('Submit'),
+)
+
+void _submit() {
+  if (_formKey.currentState?.validate() ?? false) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Form Submitted Successfully!')),
+    );
+  }
+}
+```
+
+### Screenshots
+
+Add screenshots under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/form_before_input.png`
+- `flutter_app/assets/images/form_validation_errors.png`
+- `flutter_app/assets/images/form_success_snackbar.png`
+
+![Form before input](flutter_app/assets/images/form_before_input.png)
+![Validation errors](flutter_app/assets/images/form_validation_errors.png)
+![Success SnackBar](flutter_app/assets/images/form_success_snackbar.png)
+
+### Reflection
+
+- **Why is input validation important in mobile apps?** It prevents bad data, reduces user frustration, and improves trust by giving instant, clear correction.
+- **TextField vs TextFormField:** `TextField` is basic input; `TextFormField` integrates with `Form` and supports validators + form state.
+- **How does form state management simplify validation?** `Form` + `GlobalKey<FormState>` lets you validate all fields together (`validate()`), coordinate submission, and show per-field errors consistently.
+
+---
+
+## 🔁 Managing Local UI State with setState()
+
+This lesson demonstrates local UI updates using `StatefulWidget` + `setState()`.
+
+Implementation:
+
+- `flutter_app/lib/screens/state_management_demo.dart`
+- Route: `/state-management-demo`
+
+### How to Open
+
+- Run: `flutter run`
+- From the home screen (**Responsive Layout**), open the AppBar overflow menu (**Open Demos**) → **State Management Demo**.
+
+### setState Counter Update (Snippet)
+
+```dart
+int _counter = 0;
+
+void _incrementCounter() {
+  setState(() {
+    _counter++;
+  });
+}
+```
+
+### Conditional UI Change (Threshold)
+
+The background changes once the counter reaches a threshold, using theme colors:
+
+```dart
+final colorScheme = Theme.of(context).colorScheme;
+final backgroundColor =
+    _counter >= 5 ? colorScheme.secondaryContainer : colorScheme.surface;
+```
+
+### Screenshots
+
+Add screenshots under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/state_counter_0.png`
+- `flutter_app/assets/images/state_counter_5_threshold.png`
+
+![Counter at 0](flutter_app/assets/images/state_counter_0.png)
+![Threshold reached](flutter_app/assets/images/state_counter_5_threshold.png)
+
+### Reflection
+
+- **Stateless vs Stateful widgets:** Stateless widgets don’t hold mutable UI state; Stateful widgets can update UI over time as state changes.
+- **Why is setState() important?** It tells Flutter “state changed” so the framework rebuilds the widget subtree with new values.
+- **Improper setState() impacts:** Calling it too often or from the wrong place (e.g., inside `build`) can cause unnecessary rebuilds, jank, or infinite loops.
+
+---
+
+## 🧩 Reusable Custom Widgets (Modular UI)
+
+This lesson demonstrates how to refactor repeated UI into reusable widgets so screens stay clean and consistent.
+
+Custom widgets added:
+
+- `flutter_app/lib/widgets/taskpilot_primary_button.dart` (Stateless)
+- `flutter_app/lib/widgets/taskpilot_like_button.dart` (Stateful)
+
+Reused in multiple screens:
+
+- `flutter_app/lib/screens/user_input_form.dart`
+- `flutter_app/lib/screens/state_management_demo.dart`
+
+### Stateless Custom Widget — Primary Button (Snippet)
+
+```dart
+class TaskPilotPrimaryButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onPressed;
+
+  const TaskPilotPrimaryButton({
+    required this.label,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RetroButton(label: label, onPressed: onPressed);
+  }
+}
+```
+
+### Stateful Custom Widget — Like Button (Snippet)
+
+```dart
+class TaskPilotLikeButton extends StatefulWidget {
+  const TaskPilotLikeButton({super.key});
+
+  @override
+  State<TaskPilotLikeButton> createState() => _TaskPilotLikeButtonState();
+}
+
+class _TaskPilotLikeButtonState extends State<TaskPilotLikeButton> {
+  bool _isLiked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(_isLiked ? Icons.favorite : Icons.favorite_border),
+      onPressed: () => setState(() => _isLiked = !_isLiked),
+    );
+  }
+}
+```
+
+### Screenshots
+
+Add screenshots under `flutter_app/assets/images/` showing the widgets used in at least two places:
+
+- `flutter_app/assets/images/custom_widget_form.png` (User Input Form screen)
+- `flutter_app/assets/images/custom_widget_state_demo.png` (State Management Demo screen)
+
+![Custom widgets in form](flutter_app/assets/images/custom_widget_form.png)
+![Custom widgets in state demo](flutter_app/assets/images/custom_widget_state_demo.png)
+
+### Reflection
+
+- **How do reusable widgets improve efficiency?** Changes happen in one place, UI stays consistent, and screens become smaller/easier to maintain.
+- **Challenges in modular components:** Picking good widget boundaries (too small becomes noisy; too big becomes rigid) and designing APIs (props) that are flexible but simple.
+- **How a team can apply this:** Create a shared widget library (buttons, cards, input fields) aligned to the design system so every feature reuses the same building blocks.
+
+---
+
+## 📐 Responsive Design with MediaQuery + LayoutBuilder
+
+This lesson adds a dedicated demo screen that adapts layout, padding, and typography for different screen sizes.
+
+Implementation:
+
+- `flutter_app/lib/screens/responsive_design_demo.dart`
+- Route: `/responsive-design-demo`
+
+### How to Open
+
+- Run: `flutter run`
+- From the home screen (**Responsive Layout**), open the AppBar overflow menu (**Open Demos**) → **Responsive Design Demo**.
+
+### MediaQuery (Snippet)
+
+```dart
+final mediaQuery = MediaQuery.of(context);
+final screenWidth = mediaQuery.size.width;
+final screenHeight = mediaQuery.size.height;
+final isPortrait = mediaQuery.orientation == Orientation.portrait;
+```
+
+### LayoutBuilder (Snippet)
+
+```dart
+LayoutBuilder(
+  builder: (context, constraints) {
+    final isTabletLayout = constraints.maxWidth >= 600;
+    return isTabletLayout ? Row(children: [...]) : Column(children: [...]);
+  },
+)
+```
+
+### Screenshots
+
+Add screenshots under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/responsive_demo_mobile.png`
+- `flutter_app/assets/images/responsive_demo_tablet.png`
+
+![Responsive demo (mobile)](flutter_app/assets/images/responsive_demo_mobile.png)
+![Responsive demo (tablet)](flutter_app/assets/images/responsive_demo_tablet.png)
+
+### Reflection
+
+- **Why is responsiveness important?** It keeps layouts usable and readable across phones/tablets/orientations and prevents overflow/distortion.
+- **LayoutBuilder vs MediaQuery:** `MediaQuery` provides device metrics (size/orientation). `LayoutBuilder` provides parent constraints and is ideal for conditional widget trees.
+- **How teams scale with this:** Standardize breakpoints and build adaptive components (cards, grids, forms) that use constraints + relative sizing for consistent UX.
+
+---
+
+## 🖼️ Managing Images, Icons, and Local Assets
+
+This lesson demonstrates how to add local image/icon assets, register them in `pubspec.yaml`, and render them using `Image.asset` + Flutter icons.
+
+Assets structure:
+
+```
+flutter_app/assets/
+  images/
+    logo.png
+    banner.png
+    background.png
+  icons/
+    star.png
+    profile.png
+```
+
+Demo screen:
+
+- `flutter_app/lib/screens/assets_demo_screen.dart`
+- Route: `/assets-demo`
+
+### pubspec.yaml (Snippet)
+
+```yaml
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+```
+
+### Display Local Images (Snippet)
+
+```dart
+Image.asset(
+  'assets/images/logo.png',
+  width: 150,
+  height: 150,
+  fit: BoxFit.cover,
+)
+```
+
+### Use Built-in Icons (Snippet)
+
+```dart
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: const [
+    Icon(Icons.flutter_dash, size: 36),
+    SizedBox(width: 10),
+    Icon(Icons.android, size: 36),
+    SizedBox(width: 10),
+    Icon(Icons.apple, size: 36),
+  ],
+)
+```
+
+### Screenshots
+
+Add screenshots under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/assets_demo_screen.png`
+- `flutter_app/assets/images/pubspec_assets_snippet.png`
+
+![Assets demo screen](flutter_app/assets/images/assets_demo_screen.png)
+![pubspec assets snippet](flutter_app/assets/images/pubspec_assets_snippet.png)
+
+### Reflection
+
+- **Steps to load assets correctly:** place files under an assets folder → register folders in `pubspec.yaml` → run `flutter pub get` → use exact paths in `Image.asset`/`AssetImage`.
+- **Common pubspec errors:** wrong indentation, wrong folder name, or mismatched paths (case-sensitive on many platforms).
+- **Scalability benefit:** consistent naming + folder structure prevents broken UI, makes assets discoverable, and keeps teams aligned as the project grows.
+
+---
+
+## 🎞️ Flutter Animations & Transitions
+
+This lesson adds a demo screen that showcases:
+
+- **Implicit animations**: `AnimatedContainer`, `AnimatedOpacity`
+- **Explicit animations**: `AnimationController` + `RotationTransition`
+- **Page transitions**: `PageRouteBuilder` + `SlideTransition`
+
+Implementation:
+
+- `flutter_app/lib/screens/animations_transitions_demo.dart`
+- Route: `/animations-transitions-demo`
+
+### Implicit Animation (Snippet)
+
+```dart
+AnimatedContainer(
+  duration: const Duration(milliseconds: 800),
+  curve: Curves.easeInOut,
+  width: _toggled ? 220 : 140,
+  height: _toggled ? 140 : 220,
+)
+
+AnimatedOpacity(
+  duration: const Duration(milliseconds: 800),
+  opacity: _toggled ? 1.0 : 0.25,
+  child: Image.asset('assets/images/logo.png', width: 120),
+)
+```
+
+### Explicit Animation (Snippet)
+
+```dart
+late final AnimationController _controller;
+
+@override
+void initState() {
+  super.initState();
+  _controller = AnimationController(
+    duration: const Duration(seconds: 2),
+    vsync: this,
+  )..repeat(reverse: true);
+}
+
+RotationTransition(
+  turns: _controller,
+  child: Image.asset('assets/images/logo.png', width: 90),
+)
+```
+
+### Page Transition (Snippet)
+
+```dart
+Navigator.of(context).push(
+  PageRouteBuilder(
+    transitionDuration: const Duration(milliseconds: 700),
+    pageBuilder: (_, __, ___) => const NextPage(),
+    transitionsBuilder: (_, animation, __, child) {
+      return SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(1.0, 0.0),
+          end: Offset.zero,
+        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut)),
+        child: child,
+      );
+    },
+  ),
+);
+```
+
+### Screenshots / GIFs
+
+Add captures under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/animation_implicit.png`
+- `flutter_app/assets/images/animation_explicit_rotation.png`
+- `flutter_app/assets/images/animation_page_transition.png`
+
+![Implicit animation](flutter_app/assets/images/animation_implicit.png)
+![Explicit rotation](flutter_app/assets/images/animation_explicit_rotation.png)
+![Page transition](flutter_app/assets/images/animation_page_transition.png)
+
+### Reflection
+
+- **Why are animations important for UX?** They provide feedback, guide attention, and make navigation/actions feel natural.
+- **Implicit vs explicit animations:** Implicit widgets animate automatically when values change; explicit animations use controllers for fine-grained control.
+- **Team application:** Standardize animation durations/curves and wrap common transitions into reusable helpers for consistent polish across features.
+
+---
+
+## 🔥 Firebase Integration Setup
+
+This lesson wires the app to initialize Firebase and provides a status screen to verify the connection.
+
+Implementation:
+
+- `flutter_app/lib/utils/firebase_initializer.dart` (safe initializer)
+- `flutter_app/lib/screens/firebase_setup_screen.dart` (verification UI)
+- Route: `/firebase-setup`
+
+### Android Setup (Steps)
+
+1) Firebase Console → **Add project**
+2) Add an **Android app** to the project
+3) Use package name: `com.example.taskpilot` (from `flutter_app/android/app/build.gradle.kts`)
+4) Download `google-services.json`
+5) Place it here:
+
+```
+flutter_app/android/app/google-services.json
+```
+
+6) Run:
+
+```bash
+flutter pub get
+flutter run
+```
+
+7) In the app: Home → **Open Demos** → **Firebase Setup Status**
+
+### main.dart Initialization (Snippet)
+
+```dart
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeFirebaseSafely();
+  runApp(const TaskPilotApp());
+}
+```
+
+### Gradle Note
+
+- The Google Services plugin is configured, but only applied when `google-services.json` exists. This prevents build failures before the file is added.
+
+### Verification (Screenshots)
+
+Add proof under `flutter_app/assets/images/`:
+
+- `flutter_app/assets/images/firebase_console_app_added.png` (Firebase Console → app registered)
+- `flutter_app/assets/images/firebase_setup_status_screen.png` (in-app status screen)
+
+![Firebase console proof](flutter_app/assets/images/firebase_console_app_added.png)
+![Firebase status screen](flutter_app/assets/images/firebase_setup_status_screen.png)
+
+### Reflection
+
+- **Most important step:** matching the correct package name and placing `google-services.json` in `android/app/`.
+- **Common errors:** wrong YAML/Gradle config, missing config file, or mismatched package name.
+- **How this prepares the app:** once initialized, you can reliably use Auth/Firestore/Storage/FCM without redoing platform setup.
+
 ## 🏗️ Project Structure
 
 ```
