@@ -3,7 +3,6 @@
 // This file is never manually edited. Always use FlutterFire CLI to update.
 // To regenerate this file, run: flutterfire configure
 
-import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 
@@ -38,7 +37,6 @@ class DefaultFirebaseOptions {
       databaseURL: 'https://s81-0126-flutter-taskpilot.firebaseio.com',
       storageBucket: 's81-0126-flutter-taskpilot.appspot.com',
       iosClientId: '123456789012-ios1234567890abcdef.apps.googleusercontent.com',
-      iosBundleId: 'com.kalvium.taskpilot',
     );
   }
 
@@ -50,8 +48,6 @@ class DefaultFirebaseOptions {
       projectId: 's81-0126-flutter-taskpilot',
       databaseURL: 'https://s81-0126-flutter-taskpilot.firebaseio.com',
       storageBucket: 's81-0126-flutter-taskpilot.appspot.com',
-      macosClientId: '123456789012-macos1234567890abcdef.apps.googleusercontent.com',
-      iosBundleId: 'com.kalvium.taskpilot',
     );
   }
 
