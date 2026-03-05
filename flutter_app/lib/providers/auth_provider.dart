@@ -15,6 +15,7 @@ class AuthProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
   bool _isSignUp = false;
+  bool _isCheckingAuth = true; // True while waiting for initial auth state
 
   // Getters
   User? get user => _user;
@@ -23,11 +24,14 @@ class AuthProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   bool get isSignUp => _isSignUp;
   String? get userEmail => _user?.email;
+  bool get isCheckingAuth => _isCheckingAuth; // Whether we're checking initial auth state
 
   AuthProvider() {
     // Listen to authentication state changes
+    // The first emission indicates the initial auth state has been checked
     _authService.authStateChanges.listen((User? user) {
       _user = user;
+      _isCheckingAuth = false; // Auth state determined, stop showing splash
       notifyListeners();
     });
   }
