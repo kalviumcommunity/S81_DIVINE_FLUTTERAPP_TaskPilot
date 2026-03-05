@@ -332,4 +332,220 @@ class FirestoreService {
       return [];
     }
   }
+
+  // ============================================================================
+  // TASKS COLLECTION WRITES
+  // ============================================================================
+
+  /// Create a new task with auto-generated ID
+  Future<String?> createTask(TaskModel task) async {
+    try {
+      final docRef =
+          await _firestore.collection('tasks').add(task.toMap());
+      print('Task created with ID: ${docRef.id}');
+      return docRef.id;
+    } catch (e) {
+      print('Error creating task: $e');
+      return null;
+    }
+  }
+
+  /// Update specific task fields
+  Future<bool> updateTask(String taskId, Map<String, dynamic> updates) async {
+    try {
+      // Add updatedAt timestamp
+      updates['updatedAt'] =
+          DateTime.now().toIso8601String();
+
+      await _firestore.collection('tasks').doc(taskId).update(updates);
+      print('Task $taskId updated successfully');
+      return true;
+    } catch (e) {
+      print('Error updating task: $e');
+      return false;
+    }
+  }
+
+  /// Update task status (common operation)
+  Future<bool> updateTaskStatus(String taskId, String newStatus) async {
+    return updateTask(taskId, {'status': newStatus});
+  }
+
+  /// Toggle task completion status
+  Future<bool> toggleTaskCompletion(
+      String taskId, bool currentStatus) async {
+    return updateTask(
+      taskId,
+      {'status': currentStatus ? 'pending' : 'completed'},
+    );
+  }
+
+  /// Delete a task (soft delete - mark as deleted)
+  Future<bool> deleteTask(String taskId) async {
+    try {
+      await _firestore
+          .collection('tasks')
+          .doc(taskId)
+          .update({'isDeleted': true, 'deletedAt': DateTime.now()
+          .toIso8601String()});
+      print('Task $taskId deleted (soft delete)');
+      return true;
+    } catch (e) {
+      print('Error deleting task: $e');
+      return false;
+    }
+  }
+
+  // ============================================================================
+  // PROJECTS COLLECTION WRITES
+  // ============================================================================
+
+  /// Create a new project
+  Future<String?> createProject(ProjectModel project) async {
+    try {
+      final docRef =
+          await _firestore.collection('projects').add(project.toMap());
+      print('Project created with ID: ${docRef.id}');
+      return docRef.id;
+    } catch (e) {
+      print('Error creating project: $e');
+      return null;
+    }
+  }
+
+  /// Update project fields
+  Future<bool> updateProject(
+      String projectId, Map<String, dynamic> updates) async {
+    try {
+      updates['updatedAt'] =
+          DateTime.now().toIso8601String();
+
+      await _firestore
+          .collection('projects')
+          .doc(projectId)
+          .update(updates);
+      print('Project $projectId updated successfully');
+      return true;
+    } catch (e) {
+      print('Error updating project: $e');
+      return false;
+    }
+  }
+
+  /// Update project status
+  Future<bool> updateProjectStatus(String projectId, String newStatus) async {
+    return updateProject(projectId, {'status': newStatus});
+  }
+
+  /// Update project progress
+  Future<bool> updateProjectProgress(
+      String projectId, int taskCount, int completedCount) async {
+    return updateProject(projectId, {
+      'taskCount': taskCount,
+      'completedCount': completedCount,
+    });
+  }
+
+  /// Delete a project (soft delete)
+  Future<bool> deleteProject(String projectId) async {
+    try {
+      await _firestore
+          .collection('projects')
+          .doc(projectId)
+          .update({'isDeleted': true, 'deletedAt': DateTime.now()
+          .toIso8601String()});
+      print('Project $projectId deleted (soft delete)');
+      return true;
+    } catch (e) {
+      print('Error deleting project: $e');
+      return false;
+    }
+  }
+
+  // ============================================================================
+  // CLIENTS COLLECTION WRITES
+  // ============================================================================
+
+  /// Create a new client
+  Future<String?> createClient(ClientModel client) async {
+    try {
+      final docRef =
+          await _firestore.collection('clients').add(client.toMap());
+      print('Client created with ID: ${docRef.id}');
+      return docRef.id;
+    } catch (e) {
+      print('Error creating client: $e');
+      return null;
+    }
+  }
+
+  /// Update client fields
+  Future<bool> updateClient(
+      String clientId, Map<String, dynamic> updates) async {
+    try {
+      updates['updatedAt'] =
+          DateTime.now().toIso8601String();
+
+      await _firestore
+          .collection('clients')
+          .doc(clientId)
+          .update(updates);
+      print('Client $clientId updated successfully');
+      return true;
+    } catch (e) {
+      print('Error updating client: $e');
+      return false;
+    }
+  }
+
+  /// Toggle client active/inactive status
+  Future<bool> toggleClientStatus(String clientId, bool currentStatus) async {
+    return updateClient(clientId, {'isActive': !currentStatus});
+  }
+
+  /// Update client total spent
+  Future<bool> updateClientTotalSpent(
+      String clientId, double newTotal) async {
+    return updateClient(clientId, {'totalSpent': newTotal});
+  }
+
+  /// Deactivate a client (soft delete)
+  Future<bool> deactivateClient(String clientId) async {
+    try {
+      await _firestore
+          .collection('clients')
+          .doc(clientId)
+          .update({'isActive': false});
+      print('Client $clientId deactivated');
+      return true;
+    } catch (e) {
+      print('Error deactivating client: $e');
+      return false;
+    }
+  }
+
+  // ============================================================================
+  // BATCH OPERATIONS
+  // ============================================================================
+
+  /// Batch update multiple documents
+  Future<bool> batchUpdateTasks(
+      List<String> taskIds, Map<String, dynamic> updates) async {
+    try {
+      final batch = _firestore.batch();
+      updates['updatedAt'] =
+          DateTime.now().toIso8601String();
+
+      for (String taskId in taskIds) {
+        batch.update(_firestore.collection('tasks').doc(taskId), updates);
+      }
+
+      await batch.commit();
+      print('Batch updated ${taskIds.length} tasks');
+      return true;
+    } catch (e) {
+      print('Error batch updating tasks: $e');
+      return false;
+    }
+  }
 }
