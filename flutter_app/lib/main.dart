@@ -15,6 +15,8 @@ import 'screens/responsive_design_demo.dart';
 import 'screens/assets_demo_screen.dart';
 import 'screens/animations_transitions_demo.dart';
 import 'screens/firebase_setup_screen.dart';
+import 'screens/realtime_sync_demo_screen.dart';
+import 'screens/realtime_sync_documentation_screen.dart';
 import 'providers/auth_provider.dart';
 import 'utils/firebase_initializer.dart';
 
@@ -52,6 +54,13 @@ class TaskPilotApp extends StatelessWidget {
           '/assets-demo': (context) => const AssetsDemoScreen(),
           '/animations-transitions-demo': (context) => const AnimationsTransitionsDemo(),
           '/firebase-setup': (context) => const FirebaseSetupScreen(),
+          '/realtime-sync-demo': (context) {
+            // TODO: Pass userId from auth provider or routing args
+            return RealtimeSyncDemoScreen(
+              userId: 'demo-user-id',
+            );
+          },
+          '/realtime-sync-documentation': (context) => const RealtimeSyncDocumentationScreen(),
 
           // Internal routes used by MultiScreenNavigationDemoScreen
           '/navigation/basic': (context) => const BasicExampleScreen(),

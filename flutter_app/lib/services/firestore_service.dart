@@ -525,6 +525,210 @@ class FirestoreService {
   }
 
   // ============================================================================
+  // REAL-TIME DOCUMENT LISTENERS
+  // ============================================================================
+
+  /// Listen to a single task document in real-time
+  /// 
+  /// Returns a Stream of TaskModel that emits whenever the document changes
+  /// Useful for showing live updates of a single task
+  Stream<TaskModel?> watchTask(String taskId) {
+    try {
+      return _firestore
+          .collection('tasks')
+          .doc(taskId)
+          .snapshots()
+          .map((snapshot) {
+            if (snapshot.exists) {
+              return TaskModel.fromFirestore(snapshot.data()!, snapshot.id);
+            }
+            return null;
+          })
+          .handleError((error) {
+            print('Error watching task: $error');
+            return null;
+          });
+    } catch (e) {
+      print('Exception in watchTask: $e');
+      return Stream.value(null);
+    }
+  }
+
+  /// Listen to a single project document in real-time
+  Stream<ProjectModel?> watchProject(String projectId) {
+    try {
+      return _firestore
+          .collection('projects')
+          .doc(projectId)
+          .snapshots()
+          .map((snapshot) {
+            if (snapshot.exists) {
+              return ProjectModel.fromFirestore(snapshot.data()!, snapshot.id);
+            }
+            return null;
+          })
+          .handleError((error) {
+            print('Error watching project: $error');
+            return null;
+          });
+    } catch (e) {
+      print('Exception in watchProject: $e');
+      return Stream.value(null);
+    }
+  }
+
+  /// Listen to a single client document in real-time
+  Stream<ClientModel?> watchClient(String clientId) {
+    try {
+      return _firestore
+          .collection('clients')
+          .doc(clientId)
+          .snapshots()
+          .map((snapshot) {
+            if (snapshot.exists) {
+              return ClientModel.fromFirestore(snapshot.data()!, snapshot.id);
+            }
+            return null;
+          })
+          .handleError((error) {
+            print('Error watching client: $error');
+            return null;
+          });
+    } catch (e) {
+      print('Exception in watchClient: $e');
+      return Stream.value(null);
+    }
+  }
+
+  // ============================================================================
+  // DOCUMENT SNAPSHOT INFORMATION
+  // ============================================================================
+
+  /// Get raw document snapshot with metadata for document change tracking
+  /// 
+  /// Returns DocumentSnapshot which includes:
+  /// - Document data
+  /// - Metadata about whether it came from server or cache
+  /// - Server timestamp of the change
+  /// 
+  /// Useful for detecting if data came from cache vs server
+  Stream<DocumentSnapshot> watchTaskSnapshot(String taskId) {
+    try {
+      return _firestore
+          .collection('tasks')
+          .doc(taskId)
+          .snapshots(includeMetadataChanges: true)
+          .handleError((error) {
+            print('Error watching task snapshot: $error');
+          });
+    } catch (e) {
+      print('Exception in watchTaskSnapshot: $e');
+      return const Stream.empty();
+    }
+  }
+
+  /// Get raw project snapshot with metadata
+  Stream<DocumentSnapshot> watchProjectSnapshot(String projectId) {
+    try {
+      return _firestore
+          .collection('projects')
+          .doc(projectId)
+          .snapshots(includeMetadataChanges: true)
+          .handleError((error) {
+            print('Error watching project snapshot: $error');
+          });
+    } catch (e) {
+      print('Exception in watchProjectSnapshot: $e');
+      return const Stream.empty();
+    }
+  }
+
+  // ============================================================================
+  // COLLECTION CHANGE TRACKING
+  // ============================================================================
+
+  /// Listen to collection changes with detailed change tracking
+  /// 
+  /// Returns a Stream of QuerySnapshot which includes:
+  /// - List of document changes (docChanges)
+  /// - Metadata about whether from server or cache
+  /// 
+  /// Useful for tracking exactly which documents were added/modified/removed
+  Stream<QuerySnapshot> watchTasksCollectionSnapshot(String userId) {
+    try {
+      return _firestore
+          .collection('tasks')
+          .where('userId', isEqualTo: userId)
+          .orderBy('dueDate', descending: false)
+          .snapshots(includeMetadataChanges: true)
+          .handleError((error) {
+            print('Error watching tasks collection snapshot: $error');
+          });
+    } catch (e) {
+      print('Exception in watchTasksCollectionSnapshot: $e');
+      return const Stream.empty();
+    }
+  }
+
+  /// Listen to collection changes with document change details
+  /// 
+  /// Returns a Stream mapping QuerySnapshot to detailed change information
+  /// Shows added, modified, and removed documents
+  Stream<List<DocumentChange>> watchTaskChanges(String userId) {
+    try {
+      return _firestore
+          .collection('tasks')
+          .where('userId', isEqualTo: userId)
+          .orderBy('dueDate', descending: false)
+          .snapshots()
+          .map((snapshot) {
+            return snapshot.docChanges;
+          })
+          .handleError((error) {
+            print('Error watching task changes: $error');
+            return <DocumentChange>[];
+          });
+    } catch (e) {
+      print('Exception in watchTaskChanges: $e');
+      return Stream.value([]);
+    }
+  }
+
+  /// Listen to project collection changes with metadata
+  Stream<QuerySnapshot> watchProjectsCollectionSnapshot(String userId) {
+    try {
+      return _firestore
+          .collection('projects')
+          .where('userId', isEqualTo: userId)
+          .orderBy('updatedAt', descending: true)
+          .snapshots(includeMetadataChanges: true)
+          .handleError((error) {
+            print('Error watching projects collection snapshot: $error');
+          });
+    } catch (e) {
+      print('Exception in watchProjectsCollectionSnapshot: $e');
+      return const Stream.empty();
+    }
+  }
+
+  /// Listen to client collection changes with metadata
+  Stream<QuerySnapshot> watchClientsCollectionSnapshot(String userId) {
+    try {
+      return _firestore
+          .collection('clients')
+          .where('userId', isEqualTo: userId)
+          .orderBy('updatedAt', descending: true)
+          .snapshots(includeMetadataChanges: true)
+          .handleError((error) {
+            print('Error watching clients collection snapshot: $error');
+          });
+    } catch (e) {
+      print('Exception in watchClientsCollectionSnapshot: $e');
+      return const Stream.empty();
+    }
+  }
+
+  // ============================================================================
   // BATCH OPERATIONS
   // ============================================================================
 
