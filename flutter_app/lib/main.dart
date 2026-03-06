@@ -21,6 +21,8 @@ import 'screens/firestore_query_demo_screen.dart';
 import 'screens/firestore_query_documentation_screen.dart';
 import 'screens/media_upload_demo_screen.dart';
 import 'screens/media_upload_documentation_screen.dart';
+import 'screens/cloud_functions_demo_screen.dart';
+import 'screens/cloud_functions_documentation_screen.dart';
 import 'providers/auth_provider.dart';
 import 'utils/firebase_initializer.dart';
 
@@ -77,6 +79,12 @@ class TaskPilotApp extends StatelessWidget {
             );
           },
           '/media-upload-documentation': (context) => const MediaUploadDocumentationScreen(),
+          '/cloud-functions-demo': (context) {
+            return CloudFunctionsDemoScreen(
+              userId: 'demo-user-id',
+            );
+          },
+          '/cloud-functions-documentation': (context) => const CloudFunctionsDocumentationScreen(),
 
           // Internal routes used by MultiScreenNavigationDemoScreen
           '/navigation/basic': (context) => const BasicExampleScreen(),
