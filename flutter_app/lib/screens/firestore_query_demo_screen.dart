@@ -13,6 +13,7 @@ import '../constants/retro_theme.dart';
 /// - Complex multi-condition queries
 /// - Real-time filtered streams
 /// - Search/pagination patterns
+/// 
 ///
 class FirestoreQueryDemoScreen extends StatefulWidget {
   final String userId;
@@ -94,16 +95,18 @@ class _FirestoreQueryDemoScreenState extends State<FirestoreQueryDemoScreen>
           ),
           const SizedBox(height: 16),
           // Filter by status
-          _buildQuerySection('Filter by Status', 'Show tasks with specific status',
-              _buildFilterByStatusDemo()),
+          _buildQuerySection('Filter by Status',
+              'Show tasks with specific status', _buildFilterByStatusDemo()),
           const SizedBox(height: 16),
           // Filter by priority
-          _buildQuerySection('Filter by Priority', 'Show high/urgent priority tasks',
-              _buildFilterByPriorityDemo()),
+          _buildQuerySection('Filter by Priority',
+              'Show high/urgent priority tasks', _buildFilterByPriorityDemo()),
           const SizedBox(height: 16),
           // Combined filters
-          _buildQuerySection('Multiple Filters',
-              'Combine status and priority filters', _buildMultipleFiltersDemo()),
+          _buildQuerySection(
+              'Multiple Filters',
+              'Combine status and priority filters',
+              _buildMultipleFiltersDemo()),
         ],
       ),
     );
@@ -172,7 +175,7 @@ class _FirestoreQueryDemoScreenState extends State<FirestoreQueryDemoScreen>
             'Get recently updated tasks ordered by updatedAt timestamp in descending order.',
             Colors.orange[900]!,
           ),
-          const SizedBox(height:16),
+          const SizedBox(height: 16),
           _buildQuerySection(
             'Recent Tasks',
             'Ordered by most recent update',
@@ -350,7 +353,7 @@ class _FirestoreQueryDemoScreenState extends State<FirestoreQueryDemoScreen>
 
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return Center(
-                child:Text('No tasks',
+                child: Text('No tasks',
                     style: Theme.of(context).textTheme.bodySmall),
               );
             }
@@ -379,8 +382,8 @@ class _FirestoreQueryDemoScreenState extends State<FirestoreQueryDemoScreen>
         ),
         const SizedBox(height: 12),
         FutureBuilder<List<TaskModel>>(
-          future:
-              _firestoreService.getRecentlyUpdatedTasks(widget.userId, limit: 10),
+          future: _firestoreService.getRecentlyUpdatedTasks(widget.userId,
+              limit: 10),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -454,8 +457,8 @@ class _FirestoreQueryDemoScreenState extends State<FirestoreQueryDemoScreen>
         ),
         const SizedBox(height: 12),
         FutureBuilder<List<TaskModel>>(
-          future:
-              _firestoreService.getRecentlyUpdatedTasks(widget.userId, limit: 20),
+          future: _firestoreService.getRecentlyUpdatedTasks(widget.userId,
+              limit: 20),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -493,8 +496,7 @@ class _FirestoreQueryDemoScreenState extends State<FirestoreQueryDemoScreen>
         ),
         const SizedBox(height: 12),
         FutureBuilder<List<TaskModel>>(
-          future:
-              _firestoreService.getCompletedTasks(widget.userId, limit: 50),
+          future: _firestoreService.getCompletedTasks(widget.userId, limit: 50),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -563,7 +565,7 @@ class _FirestoreQueryDemoScreenState extends State<FirestoreQueryDemoScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Limit Results: $_limitCount', 
+              Text('Limit Results: $_limitCount',
                   style: Theme.of(context).textTheme.labelSmall),
               Slider(
                 value: _limitCount.toDouble(),
@@ -700,7 +702,8 @@ class _FirestoreQueryDemoScreenState extends State<FirestoreQueryDemoScreen>
                       child: Text(option),
                     ))
                 .toList(),
-            onChanged: (value) => onChanged(value ?? 'All'=="All" ? '' : value!),
+            onChanged: (value) =>
+                onChanged(value ?? 'All' == "All" ? '' : value!),
           ),
         ],
       ),
