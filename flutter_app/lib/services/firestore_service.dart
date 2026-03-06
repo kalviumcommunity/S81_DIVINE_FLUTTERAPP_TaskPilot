@@ -729,6 +729,362 @@ class FirestoreService {
   }
 
   // ============================================================================
+  // ADVANCED QUERY OPERATIONS
+  // ============================================================================
+
+  /// Query tasks with filtering - GET all tasks with specific status
+  Future<List<TaskModel>> queryTasksByStatusFuture(
+      String userId, String status) async {
+    try {
+      final snapshot = await _firestore
+          .collection('tasks')
+          .where('userId', isEqualTo: userId)
+          .where('status', isEqualTo: status)
+          .orderBy('dueDate', descending: false)
+          .get();
+
+      return snapshot.docs
+          .map((doc) => TaskModel.fromFirestore(doc.data(), doc.id))
+          .toList();
+    } catch (e) {
+      print('Error querying tasks by status: $e');
+      return [];
+    }
+  }
+
+  /// Query tasks with comparison operators - Find high priority tasks
+  Future<List<TaskModel>> queryHighPriorityTasks(String userId) async {
+    try {
+      // Get all high and urgent priority tasks
+      final snapshot = await _firestore
+          .collection('tasks')
+          .where('userId', isEqualTo: userId)
+          .where('priority', whereIn: ['urgent', 'high'])
+          .orderBy('priority', descending: true)
+          .orderBy('dueDate', descending: false)
+          .get();
+
+      return snapshot.docs
+          .map((doc) => TaskModel.fromFirestore(doc.data(), doc.id))
+          .toList();
+    } catch (e) {
+      print('Error querying high priority tasks: $e');
+      return [];
+    }
+  }
+
+  /// Query with date range - Get tasks due within date range
+  Future<List<TaskModel>> queryTasksByDateRange(
+    String userId,
+    DateTime startDate,
+    DateTime endDate,
+  ) async {
+    try {
+      final snapshot = await _firestore
+          .collection('tasks')
+          .where('userId', isEqualTo: userId)
+          .where('dueDate', isGreaterThanOrEqualTo: startDate.toIso8601String())
+          .where('dueDate', isLessThanOrEqualTo: endDate.toIso8601String())
+          .orderBy('dueDate', descending: false)
+          .get();
+
+      return snapshot.docs
+          .map((doc) => TaskModel.fromFirestore(doc.data(), doc.id))
+          .toList();
+    } catch (e) {
+      print('Error querying tasks by date range: $e');
+      return [];
+    }
+  }
+
+  /// Query with combination of filters - Tasks matching multiple conditions
+  Future<List<TaskModel>> queryTasksAdvanced(
+    String userId, {
+    String? status,
+    String? priority,
+    DateTime? dueAfter,
+    int? limitCount = 25,
+  }) async {
+    try {
+      Query query = _firestore.collection('tasks');
+
+      // Apply filters
+      query = query.where('userId', isEqualTo: userId);
+
+      if (status != null) {
+        query = query.where('status', isEqualTo: status);
+      }
+
+      if (priority != null) {
+        query = query.where('priority', isEqualTo: priority);
+      }
+
+      if (dueAfter != null) {
+        query = query.where('dueDate',
+            isGreaterThanOrEqualTo: dueAfter.toIso8601String());
+      }
+
+      // Apply ordering
+      query = query.orderBy('dueDate', descending: false);
+
+      // Apply limit
+      if (limitCount != null) {
+        query = query.limit(limitCount);
+      }
+
+      final snapshot = await query.get();
+
+      return snapshot.docs
+          .map((doc) => TaskModel.fromFirestore(doc.data(), doc.id))
+          .toList();
+    } catch (e) {
+      print('Error querying tasks (advanced): $e');
+      return [];
+    }
+  }
+
+  /// Real-time query - Filter and sort collection with live updates
+  Stream<List<TaskModel>> streamFilteredTasks(
+    String userId, {
+    String? status,
+    String? priority,
+    int? limitCount,
+  }) {
+    try {
+      Query query = _firestore.collection('tasks');
+
+      // Apply filters
+      query = query.where('userId', isEqualTo: userId);
+
+      if (status != null && status.isNotEmpty) {
+        query = query.where('status', isEqualTo: status);
+      }
+
+      if (priority != null && priority.isNotEmpty) {
+        query = query.where('priority', isEqualTo: priority);
+      }
+
+      // Apply ordering
+      query = query.orderBy('dueDate', descending: false);
+
+      // Apply limit
+      if (limitCount != null) {
+        query = query.limit(limitCount);
+      }
+
+      return query
+          .snapshots()
+          .map((snapshot) {
+            return snapshot.docs
+                .map((doc) => TaskModel.fromFirestore(doc.data(), doc.id))
+                .toList();
+          })
+          .handleError((error) {
+            print('Error streaming filtered tasks: $error');
+            return <TaskModel>[];
+          });
+    } catch (e) {
+      print('Exception in streamFilteredTasks: $e');
+      return Stream.value([]);
+    }
+  }
+
+  /// Real-time query - Get projects ordered by specific field with limit
+  Stream<List<ProjectModel>> streamProjectsOrderedByStatus(
+    String userId, {
+    int? limitCount = 10,
+  }) {
+    try {
+      Query query = _firestore.collection('projects');
+
+      query = query.where('userId', isEqualTo: userId);
+      query = query.orderBy('status', descending: false);
+      query = query.orderBy('updatedAt', descending: true);
+
+      if (limitCount != null) {
+        query = query.limit(limitCount);
+      }
+
+      return query
+          .snapshots()
+          .map((snapshot) {
+            return snapshot.docs
+                .map((doc) => ProjectModel.fromFirestore(doc.data(), doc.id))
+                .toList();
+          })
+          .handleError((error) {
+            print('Error streaming projects by status: $error');
+            return <ProjectModel>[];
+          });
+    } catch (e) {
+      print('Exception in streamProjectsOrderedByStatus: $e');
+      return Stream.value([]);
+    }
+  }
+
+  /// Query clients with search - Case-insensitive name search
+  Future<List<ClientModel>> searchClientsByName(
+    String userId,
+    String searchQuery,
+  ) async {
+    try {
+      // Firestore doesn't support case-insensitive search natively
+      // So we retrieve active clients and filter client-side
+      final snapshot = await _firestore
+          .collection('clients')
+          .where('userId', isEqualTo: userId)
+          .where('isActive', isEqualTo: true)
+          .orderBy('isActive', descending: true)
+          .orderBy('updatedAt', descending: true)
+          .limit(100)
+          .get();
+
+      final allClients = snapshot.docs
+          .map((doc) => ClientModel.fromFirestore(doc.data(), doc.id))
+          .toList();
+
+      // Filter by name (case-insensitive)
+      final query = searchQuery.toLowerCase();
+      return allClients
+          .where((client) => client.name.toLowerCase().contains(query))
+          .toList();
+    } catch (e) {
+      print('Error searching clients: $e');
+      return [];
+    }
+  }
+
+  /// Get tasks with most recent updates - Ordering by updatedAt descending
+  Future<List<TaskModel>> getRecentlyUpdatedTasks(
+    String userId, {
+    int limit = 10,
+  }) async {
+    try {
+      final snapshot = await _firestore
+          .collection('tasks')
+          .where('userId', isEqualTo: userId)
+          .orderBy('updatedAt', descending: true)
+          .limit(limit)
+          .get();
+
+      return snapshot.docs
+          .map((doc) => TaskModel.fromFirestore(doc.data(), doc.id))
+          .toList();
+    } catch (e) {
+      print('Error getting recently updated tasks: $e');
+      return [];
+    }
+  }
+
+  /// Pagination support - Get next batch of documents using startAfter
+  Future<List<TaskModel>> getTasksBatch(
+    String userId, {
+    DocumentSnapshot? startAfter,
+    int batchSize = 20,
+  }) async {
+    try {
+      Query query = _firestore
+          .collection('tasks')
+          .where('userId', isEqualTo: userId)
+          .orderBy('dueDate', descending: false);
+
+      if (startAfter != null) {
+        query = query.startAfter([startAfter]);
+      }
+
+      final snapshot = await query.limit(batchSize).get();
+
+      return snapshot.docs
+          .map((doc) => TaskModel.fromFirestore(doc.data(), doc.id))
+          .toList();
+    } catch (e) {
+      print('Error getting task batch: $e');
+      return [];
+    }
+  }
+
+  /// Complex query - Get incomplete tasks sorted by priority then due date
+  Stream<List<TaskModel>> streamIncompleteTasks(String userId) {
+    try {
+      return _firestore
+          .collection('tasks')
+          .where('userId', isEqualTo: userId)
+          .where('status', whereIn: ['pending', 'in_progress', 'on_hold'])
+          .orderBy('priority', descending: true)
+          .orderBy('dueDate', descending: false)
+          .snapshots()
+          .map((snapshot) {
+            return snapshot.docs
+                .map((doc) => TaskModel.fromFirestore(doc.data(), doc.id))
+                .toList();
+          })
+          .handleError((error) {
+            print('Error streaming incomplete tasks: $error');
+            return <TaskModel>[];
+          });
+    } catch (e) {
+      print('Exception in streamIncompleteTasks: $e');
+      return Stream.value([]);
+    }
+  }
+
+  /// Get completed tasks - Ordered by completion date
+  Future<List<TaskModel>> getCompletedTasks(
+    String userId, {
+    int limit = 50,
+  }) async {
+    try {
+      final snapshot = await _firestore
+          .collection('tasks')
+          .where('userId', isEqualTo: userId)
+          .where('status', isEqualTo: 'completed')
+          .orderBy('updatedAt', descending: true)
+          .limit(limit)
+          .get();
+
+      return snapshot.docs
+          .map((doc) => TaskModel.fromFirestore(doc.data(), doc.id))
+          .toList();
+    } catch (e) {
+      print('Error getting completed tasks: $e');
+      return [];
+    }
+  }
+
+  /// Real-time tasks sorted by multiple criteria
+  Stream<List<TaskModel>> streamTasksSorted(
+    String userId, {
+    bool sortByPriority = false,
+    bool descending = false,
+  }) {
+    try {
+      var query = _firestore
+          .collection('tasks')
+          .where('userId', isEqualTo: userId);
+
+      if (sortByPriority) {
+        query = query.orderBy('priority', descending: descending);
+      }
+      query = query.orderBy('dueDate', descending: descending);
+
+      return query
+          .snapshots()
+          .map((snapshot) {
+            return snapshot.docs
+                .map((doc) => TaskModel.fromFirestore(doc.data(), doc.id))
+                .toList();
+          })
+          .handleError((error) {
+            print('Error streaming sorted tasks: $error');
+            return <TaskModel>[];
+          });
+    } catch (e) {
+      print('Exception in streamTasksSorted: $e');
+      return Stream.value([]);
+    }
+  }
+
+  // ============================================================================
   // BATCH OPERATIONS
   // ============================================================================
 

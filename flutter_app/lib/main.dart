@@ -17,6 +17,8 @@ import 'screens/animations_transitions_demo.dart';
 import 'screens/firebase_setup_screen.dart';
 import 'screens/realtime_sync_demo_screen.dart';
 import 'screens/realtime_sync_documentation_screen.dart';
+import 'screens/firestore_query_demo_screen.dart';
+import 'screens/firestore_query_documentation_screen.dart';
 import 'providers/auth_provider.dart';
 import 'utils/firebase_initializer.dart';
 
@@ -61,6 +63,12 @@ class TaskPilotApp extends StatelessWidget {
             );
           },
           '/realtime-sync-documentation': (context) => const RealtimeSyncDocumentationScreen(),
+          '/firestore-query-demo': (context) {
+            return FirestoreQueryDemoScreen(
+              userId: 'demo-user-id',
+            );
+          },
+          '/firestore-query-documentation': (context) => const FirestoreQueryDocumentationScreen(),
 
           // Internal routes used by MultiScreenNavigationDemoScreen
           '/navigation/basic': (context) => const BasicExampleScreen(),
