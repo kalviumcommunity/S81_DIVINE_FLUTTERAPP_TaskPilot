@@ -25,6 +25,8 @@ import 'screens/cloud_functions_demo_screen.dart';
 import 'screens/cloud_functions_documentation_screen.dart';
 import 'screens/fcm_demo_screen.dart';
 import 'screens/fcm_documentation_screen.dart';
+import 'screens/secure_profile_screen.dart';
+import 'screens/firestore_security_rules_screen.dart';
 import 'providers/auth_provider.dart';
 import 'utils/firebase_initializer.dart';
 
@@ -89,6 +91,8 @@ class TaskPilotApp extends StatelessWidget {
           '/cloud-functions-documentation': (context) => const CloudFunctionsDocumentationScreen(),
           '/fcm-demo': (context) => const FCMDemoScreen(),
           '/fcm-documentation': (context) => const FCMDocumentationScreen(),
+          '/secure-profile': (context) => const SecureProfileScreen(),
+          '/firestore-security-rules': (context) => const FirestoreSecurityRulesScreen(),
 
           // Internal routes used by MultiScreenNavigationDemoScreen
           '/navigation/basic': (context) => const BasicExampleScreen(),
