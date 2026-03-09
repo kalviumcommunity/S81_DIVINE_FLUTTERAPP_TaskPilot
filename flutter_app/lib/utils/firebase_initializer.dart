@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import '../firebase_options.dart';
+import '../services/fcm_service.dart';
 
-/// Initializes Firebase if possible.
+/// Initializes Firebase and FCM if possible.
 ///
 /// Returns the initialized [FirebaseApp] when successful, otherwise returns null.
 ///
@@ -13,9 +14,19 @@ Future<FirebaseApp?> initializeFirebaseSafely() async {
     if (Firebase.apps.isNotEmpty) {
       return Firebase.apps.first;
     }
-    return await Firebase.initializeApp(
+    final firebaseApp = await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+
+    // Initialize FCM for push notifications
+    try {
+      await FCMService().initialize();
+    } catch (e) {
+      debugPrint('FCM initialization failed: $e');
+      // Continue app execution even if FCM fails
+    }
+
+    return firebaseApp;
   } catch (error, stackTrace) {
     debugPrint('Firebase initialization failed: $error');
     debugPrintStack(stackTrace: stackTrace);

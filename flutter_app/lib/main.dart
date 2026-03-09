@@ -23,6 +23,8 @@ import 'screens/media_upload_demo_screen.dart';
 import 'screens/media_upload_documentation_screen.dart';
 import 'screens/cloud_functions_demo_screen.dart';
 import 'screens/cloud_functions_documentation_screen.dart';
+import 'screens/fcm_demo_screen.dart';
+import 'screens/fcm_documentation_screen.dart';
 import 'providers/auth_provider.dart';
 import 'utils/firebase_initializer.dart';
 
@@ -85,6 +87,8 @@ class TaskPilotApp extends StatelessWidget {
             );
           },
           '/cloud-functions-documentation': (context) => const CloudFunctionsDocumentationScreen(),
+          '/fcm-demo': (context) => const FCMDemoScreen(),
+          '/fcm-documentation': (context) => const FCMDocumentationScreen(),
 
           // Internal routes used by MultiScreenNavigationDemoScreen
           '/navigation/basic': (context) => const BasicExampleScreen(),
