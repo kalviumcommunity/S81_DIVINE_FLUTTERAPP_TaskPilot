@@ -37,8 +37,8 @@ class RetroColors {
 
 /// Retro Typography
 class RetroTypography {
-  static const FontFamily courierNew = 'Courier';
-  static const FontFamily vt323 = 'VT323';
+  static const String courierNew = 'Courier';
+  static const String vt323 = 'VT323';
 
   // Text Styles
   static const TextStyle retroDisplayLarge = TextStyle(
@@ -87,7 +87,7 @@ class RetroTypography {
 }
 
 /// Enum for font families
-enum FontFamily { courier, vt323 }
+// enum FontFamily { courier, vt323 }
 
 /// Retro Shadows & Depth Effects
 class RetroEffects {
